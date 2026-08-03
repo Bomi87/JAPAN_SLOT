@@ -1237,11 +1237,17 @@
       element.innerHTML = `
         <div class="inline-result-main">
           ${escapeHtml(info.label)}
-          <span
-            class="query-source-badge ${sourceInfo.className}"
-          >
-            ${escapeHtml(sourceInfo.label)}
-          </span>
+          ${
+            sourceInfo
+              ? `
+                  <span
+                    class="query-source-badge ${sourceInfo.className}"
+                  >
+                    ${escapeHtml(sourceInfo.label)}
+                  </span>
+                `
+              : ''
+          }
         </div>
 
         ${
@@ -1424,10 +1430,7 @@
         };
       }
 
-      return {
-        label: '실시간',
-        className: 'live'
-      };
+      return null;
     }
 
 

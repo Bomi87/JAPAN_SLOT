@@ -14,23 +14,28 @@
 
   <style>
     :root {
-      --background: #f3f6fa;
+      --background: #f2f5f9;
       --card: #ffffff;
-      --border: #d9e0e8;
+      --border: #d8e0e9;
       --text: #172033;
-      --subtext: #667085;
+      --muted: #667085;
       --primary: #1769e0;
-      --primary-hover: #0f55bb;
-      --available-bg: #eafaf1;
+      --primary-hover: #1058bd;
+
+      --available-background: #e9f9f0;
       --available-text: #087443;
-      --unavailable-bg: #fff0f0;
-      --unavailable-text: #bd2525;
-      --alternative-bg: #fff8e7;
-      --alternative-text: #9a6400;
-      --ignored-bg: #f2f4f7;
+
+      --unavailable-background: #fff0f0;
+      --unavailable-text: #b42318;
+
+      --alternative-background: #fff7e4;
+      --alternative-text: #8b5b00;
+
+      --period-background: #edf3ff;
+      --period-text: #344f9b;
+
+      --ignored-background: #f2f4f7;
       --ignored-text: #667085;
-      --period-bg: #eef4ff;
-      --period-text: #3454a1;
     }
 
     * {
@@ -48,41 +53,42 @@
     }
 
     .page {
-      width: min(1100px, 100%);
+      width: min(1120px, 100%);
       margin: 0 auto;
       padding: 24px 16px 50px;
     }
 
-    .header {
-      margin-bottom: 18px;
+    .page-header {
+      margin-bottom: 17px;
     }
 
-    .header h1 {
+    .page-header h1 {
       margin: 0 0 7px;
       font-size: 27px;
     }
 
-    .header p {
+    .page-header p {
       margin: 0;
-      color: var(--subtext);
-      line-height: 1.6;
+      color: var(--muted);
       font-size: 14px;
+      line-height: 1.6;
     }
 
     .panel {
-      background: var(--card);
+      padding: 20px;
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 20px;
+      background: var(--card);
       box-shadow:
-        0 8px 28px rgba(16, 24, 40, 0.07);
+        0 8px 28px
+        rgba(16, 24, 40, 0.07);
     }
 
     .form-grid {
       display: grid;
       grid-template-columns:
-        repeat(5, minmax(0, 1fr));
-      gap: 13px;
+        1fr 1fr 1fr 1fr 1fr;
+      gap: 12px;
       align-items: end;
     }
 
@@ -108,11 +114,15 @@
 
     input:focus,
     select:focus {
-      outline: 3px solid rgba(23, 105, 224, 0.14);
-      border-color: var(--primary);
+      outline:
+        3px solid
+        rgba(23, 105, 224, 0.14);
+
+      border-color:
+        var(--primary);
     }
 
-    .buttons {
+    .button-row {
       display: flex;
       gap: 10px;
       margin-top: 17px;
@@ -120,12 +130,17 @@
 
     button {
       height: 46px;
-      padding: 0 20px;
+      padding: 0 19px;
       border: 0;
       border-radius: 9px;
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: wait;
     }
 
     .primary-button {
@@ -135,61 +150,58 @@
     }
 
     .primary-button:hover {
-      background: var(--primary-hover);
+      background:
+        var(--primary-hover);
     }
 
     .secondary-button {
-      background: #eef2f6;
+      background: #edf1f5;
       color: #344054;
-    }
-
-    button:disabled {
-      opacity: 0.55;
-      cursor: wait;
     }
 
     .loading {
       display: none;
-      margin-top: 18px;
+      margin-top: 17px;
       padding: 14px;
       border-radius: 10px;
-      background: #eef4ff;
-      color: #344f9c;
+      background: #edf4ff;
+      color: #344f9b;
       text-align: center;
+      line-height: 1.5;
     }
 
     .error {
       display: none;
-      margin-top: 18px;
+      margin-top: 17px;
       padding: 14px;
-      border: 1px solid #f4b9b9;
+      border: 1px solid #efb4b4;
       border-radius: 10px;
-      background: #fff1f1;
-      color: #a32020;
+      background: #fff0f0;
+      color: #a51d1d;
       white-space: pre-wrap;
       line-height: 1.55;
     }
 
-    .result-section {
+    .results {
       display: none;
-      margin-top: 22px;
+      margin-top: 23px;
     }
 
-    .result-header {
+    .result-heading {
       display: flex;
       justify-content: space-between;
-      gap: 15px;
+      gap: 12px;
       align-items: flex-end;
       margin-bottom: 14px;
     }
 
-    .result-title {
+    .result-heading h2 {
       margin: 0;
       font-size: 21px;
     }
 
     .checked-at {
-      color: var(--subtext);
+      color: var(--muted);
       font-size: 12px;
     }
 
@@ -198,7 +210,7 @@
       grid-template-columns:
         repeat(5, minmax(0, 1fr));
       gap: 10px;
-      margin-bottom: 15px;
+      margin-bottom: 14px;
     }
 
     .summary-card {
@@ -209,7 +221,7 @@
     }
 
     .summary-label {
-      color: var(--subtext);
+      color: var(--muted);
       font-size: 12px;
     }
 
@@ -229,22 +241,27 @@
     .filter-button {
       height: 36px;
       padding: 0 13px;
-      border: 1px solid var(--border);
+      border:
+        1px solid
+        var(--border);
       background: white;
       color: #475467;
       font-size: 13px;
     }
 
     .filter-button.active {
-      border-color: var(--primary);
+      border-color:
+        var(--primary);
       background: #edf4ff;
       color: var(--primary);
     }
 
-    .table-wrap {
-      overflow: auto;
+    .table-container {
       max-height: 650px;
-      border: 1px solid var(--border);
+      overflow: auto;
+      border:
+        1px solid
+        var(--border);
       border-radius: 12px;
     }
 
@@ -258,14 +275,16 @@
     thead {
       position: sticky;
       top: 0;
-      z-index: 5;
+      z-index: 4;
       background: #f7f9fb;
     }
 
     th,
     td {
       padding: 11px 13px;
-      border-bottom: 1px solid #e8ecf1;
+      border-bottom:
+        1px solid
+        #e8ecf1;
       text-align: left;
       white-space: nowrap;
     }
@@ -273,7 +292,6 @@
     th {
       color: #475467;
       font-size: 12px;
-      letter-spacing: 0.02em;
     }
 
     tbody tr:hover {
@@ -287,9 +305,9 @@
 
     .status-badge {
       display: inline-flex;
-      align-items: center;
-      min-width: 90px;
+      min-width: 96px;
       justify-content: center;
+      align-items: center;
       padding: 6px 10px;
       border-radius: 999px;
       font-size: 12px;
@@ -297,50 +315,60 @@
     }
 
     .status-AVAILABLE {
-      background: var(--available-bg);
-      color: var(--available-text);
+      background:
+        var(--available-background);
+      color:
+        var(--available-text);
     }
 
     .status-UNAVAILABLE {
-      background: var(--unavailable-bg);
-      color: var(--unavailable-text);
+      background:
+        var(--unavailable-background);
+      color:
+        var(--unavailable-text);
     }
 
     .status-ALTERNATIVE {
-      background: var(--alternative-bg);
-      color: var(--alternative-text);
+      background:
+        var(--alternative-background);
+      color:
+        var(--alternative-text);
     }
 
     .status-OUT_OF_PERIOD {
-      background: var(--period-bg);
-      color: var(--period-text);
+      background:
+        var(--period-background);
+      color:
+        var(--period-text);
     }
 
     .status-IGNORED,
     .status-UNKNOWN {
-      background: var(--ignored-bg);
-      color: var(--ignored-text);
+      background:
+        var(--ignored-background);
+      color:
+        var(--ignored-text);
     }
 
     .alternative-chip {
       display: inline-block;
-      margin-right: 5px;
+      margin: 2px 5px 2px 0;
       padding: 5px 9px;
-      border: 1px solid #e1c373;
+      border: 1px solid #dfc071;
       border-radius: 999px;
       background: #fffaf0;
-      color: #7f5500;
+      color: #795000;
       font-size: 12px;
       font-weight: 700;
     }
 
-    .empty-alternative {
+    .empty-value {
       color: #98a2b3;
     }
 
     .note {
-      margin-top: 13px;
-      color: var(--subtext);
+      margin-top: 12px;
+      color: var(--muted);
       font-size: 12px;
       line-height: 1.6;
     }
@@ -359,7 +387,8 @@
 
     @media (max-width: 520px) {
       .page {
-        padding: 12px 9px 35px;
+        padding:
+          12px 9px 35px;
       }
 
       .panel {
@@ -370,12 +399,7 @@
         grid-template-columns: 1fr;
       }
 
-      .summary-grid {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-      }
-
-      .result-header {
+      .result-heading {
         display: block;
       }
 
@@ -393,12 +417,14 @@
 
 <body>
   <main class="page">
-    <header class="header">
-      <h1>MLIT Slot Availability</h1>
+    <header class="page-header">
+      <h1>
+        MLIT Slot Availability
+      </h1>
 
       <p>
-        지정 공항의 슬롯을 0000L부터 2400L까지
-        30분 간격으로 조회합니다.
+        선택한 날짜의 슬롯을 0000L부터
+        2400L까지 30분 간격으로 확인합니다.
       </p>
     </header>
 
@@ -411,37 +437,37 @@
 
           <select id="mode">
             <option value="departure">
-              출발 슬롯
+              출발 슬롯 기준
             </option>
 
             <option value="arrival">
-              도착 슬롯
+              도착 슬롯 기준
             </option>
           </select>
         </div>
 
         <div class="field">
-          <label for="airport">
-            조회 공항 ICAO
+          <label for="departureAirport">
+            출발 공항 ICAO
           </label>
 
           <input
-            id="airport"
+            id="departureAirport"
             maxlength="4"
-            placeholder="예: RJTT"
+            placeholder="RKSS"
             autocomplete="off"
           >
         </div>
 
         <div class="field">
-          <label for="otherAirport">
-            상대 공항 ICAO
+          <label for="arrivalAirport">
+            도착 공항 ICAO
           </label>
 
           <input
-            id="otherAirport"
+            id="arrivalAirport"
             maxlength="4"
-            placeholder="예: RKSS"
+            placeholder="RJTT"
             autocomplete="off"
           >
         </div>
@@ -473,7 +499,7 @@
         </div>
       </div>
 
-      <div class="buttons">
+      <div class="button-row">
         <button
           id="searchButton"
           class="primary-button"
@@ -495,7 +521,8 @@
         id="loading"
         class="loading"
       >
-        49개 시간대를 확인하고 있습니다.
+        SWIM 로그인 및 49개 시간대를 확인하고 있습니다.<br>
+        잠시 기다려 주세요.
       </div>
 
       <div
@@ -504,13 +531,11 @@
       ></div>
 
       <section
-        id="resultSection"
-        class="result-section"
+        id="results"
+        class="results"
       >
-        <div class="result-header">
-          <h2 class="result-title">
-            조회 결과
-          </h2>
+        <div class="result-heading">
+          <h2>조회 결과</h2>
 
           <div
             id="checkedAt"
@@ -560,7 +585,7 @@
 
           <div class="summary-card">
             <div class="summary-label">
-              대체 시간
+              대체 시간 있음
             </div>
 
             <div
@@ -577,7 +602,7 @@
             </div>
 
             <div
-              id="summaryPeriod"
+              id="summaryOutOfPeriod"
               class="summary-number"
             >
               0
@@ -619,11 +644,11 @@
           </button>
         </div>
 
-        <div class="table-wrap">
+        <div class="table-container">
           <table>
             <thead>
               <tr>
-                <th>시간</th>
+                <th>Local Time</th>
                 <th>결과</th>
                 <th>대체 가능 시간</th>
                 <th>API 요청 일시</th>
@@ -635,48 +660,48 @@
         </div>
 
         <div class="note">
-          2400L 행은 API상 다음 날짜의 00:00으로
-          변환하여 조회합니다.
+          2400L은 다음 날짜 00:00으로 변환하여 조회합니다.
+          출발 기준에서는 선택한 시간이 출발시각이며,
+          도착 기준에서는 선택한 시간이 도착시각입니다.
         </div>
       </section>
     </section>
   </main>
 
   <script>
-    let resultRows = [];
-    let currentFilter = 'ALL';
+    let allRows = [];
+    let activeFilter = 'ALL';
 
-    initializePage();
+    initialize();
 
-    function initializePage() {
+    function initialize() {
       setDefaultDate();
       bindAirportInputs();
     }
 
     function setDefaultDate() {
-      const dateInput =
-        document.getElementById('date');
-
       const now =
         new Date();
 
-      const localDate =
+      const local =
         new Date(
           now.getTime() -
           now.getTimezoneOffset() *
           60000
         );
 
-      dateInput.value =
-        localDate
-          .toISOString()
-          .substring(0, 10);
+      document
+        .getElementById('date')
+        .value =
+          local
+            .toISOString()
+            .substring(0, 10);
     }
 
     function bindAirportInputs() {
       [
-        'airport',
-        'otherAirport'
+        'departureAirport',
+        'arrivalAirport'
       ].forEach(function(id) {
         document
           .getElementById(id)
@@ -697,19 +722,21 @@
     }
 
     function runSearch() {
-      clearMessages();
+      clearError();
 
-      const input = {
+      const request = {
         mode:
           getValue('mode'),
 
-        airport:
-          getValue('airport')
-            .toUpperCase(),
+        departureAirport:
+          getValue(
+            'departureAirport'
+          ).toUpperCase(),
 
-        otherAirport:
-          getValue('otherAirport')
-            .toUpperCase(),
+        arrivalAirport:
+          getValue(
+            'arrivalAirport'
+          ).toUpperCase(),
 
         date:
           normalizeDate(
@@ -723,7 +750,7 @@
       };
 
       const validationError =
-        validateClientInput(input);
+        validateRequest(request);
 
       if (validationError) {
         showError(validationError);
@@ -739,15 +766,16 @@
         .withFailureHandler(
           handleFailure
         )
-        .checkFullDaySlots(input);
+        .checkFullDaySlots(request);
     }
 
     function handleSuccess(response) {
       setLoading(false);
 
-      if (!response ||
-          response.success !== true) {
-
+      if (
+        !response ||
+        response.success !== true
+      ) {
         showError(
           response &&
           response.message
@@ -758,22 +786,29 @@
         return;
       }
 
-      resultRows =
+      allRows =
         Array.isArray(response.rows)
           ? response.rows
           : [];
 
-      currentFilter = 'ALL';
+      activeFilter = 'ALL';
+
+      renderSummary(
+        response.summary || {}
+      );
 
       updateFilterButtons();
-      renderSummary(response.summary);
       renderRows();
-      showResultSection();
 
       document
         .getElementById('checkedAt')
         .textContent =
           `조회 시각: ${response.checkedAt}`;
+
+      document
+        .getElementById('results')
+        .style.display =
+          'block';
     }
 
     function handleFailure(error) {
@@ -787,32 +822,29 @@
     }
 
     function renderSummary(summary) {
-      const safeSummary =
-        summary || {};
-
       setText(
         'summaryTotal',
-        safeSummary.total || 0
+        summary.total || 0
       );
 
       setText(
         'summaryAvailable',
-        safeSummary.available || 0
+        summary.available || 0
       );
 
       setText(
         'summaryUnavailable',
-        safeSummary.unavailable || 0
+        summary.unavailable || 0
       );
 
       setText(
         'summaryAlternative',
-        safeSummary.alternative || 0
+        summary.alternative || 0
       );
 
       setText(
-        'summaryPeriod',
-        safeSummary.outOfPeriod || 0
+        'summaryOutOfPeriod',
+        summary.outOfPeriod || 0
       );
     }
 
@@ -822,15 +854,16 @@
           'resultBody'
         );
 
-      const filteredRows =
-        resultRows.filter(function(row) {
-          if (currentFilter === 'ALL') {
+      const rows =
+        allRows.filter(function(row) {
+          if (activeFilter === 'ALL') {
             return true;
           }
 
-          if (currentFilter ===
-              'UNAVAILABLE') {
-
+          if (
+            activeFilter ===
+            'UNAVAILABLE'
+          ) {
             return (
               row.status ===
                 'UNAVAILABLE' ||
@@ -841,11 +874,13 @@
             );
           }
 
-          return row.status ===
-            currentFilter;
+          return (
+            row.status ===
+            activeFilter
+          );
         });
 
-      if (filteredRows.length === 0) {
+      if (rows.length === 0) {
         body.innerHTML = `
           <tr>
             <td colspan="4">
@@ -858,19 +893,21 @@
       }
 
       body.innerHTML =
-        filteredRows
+        rows
           .map(createRowHtml)
           .join('');
     }
 
     function createRowHtml(row) {
       const alternatives =
-        Array.isArray(row.alternatives)
+        Array.isArray(
+          row.alternatives
+        )
           ? row.alternatives
           : [];
 
       const alternativeHtml =
-        alternatives.length
+        alternatives.length > 0
           ? alternatives
               .map(function(time) {
                 return `
@@ -883,9 +920,7 @@
               })
               .join('')
           : `
-              <span
-                class="empty-alternative"
-              >
+              <span class="empty-value">
                 -
               </span>
             `;
@@ -893,18 +928,24 @@
       return `
         <tr>
           <td class="time-cell">
-            ${escapeHtml(row.time)}
+            ${escapeHtml(
+              row.displayTime
+            )}
           </td>
 
           <td>
             <span
               class="
                 status-badge
-                status-${escapeHtml(row.status)}
+                status-${escapeHtml(
+                  row.status
+                )}
               "
             >
               ${escapeHtml(
-                getStatusLabel(row.status)
+                getStatusLabel(
+                  row.status
+                )
               )}
             </span>
           </td>
@@ -914,8 +955,12 @@
           </td>
 
           <td>
-            ${escapeHtml(row.requestDate)}
-            ${escapeHtml(row.requestTime)}
+            ${escapeHtml(
+              row.requestDate
+            )}
+            ${escapeHtml(
+              row.requestTime
+            )}
           </td>
         </tr>
       `;
@@ -924,36 +969,41 @@
     function getStatusLabel(status) {
       const labels = {
         AVAILABLE:
-          '사용 가능',
+          '✅ 사용 가능',
 
         UNAVAILABLE:
-          '사용 불가',
+          '❌ 사용 불가',
 
         ALTERNATIVE:
-          '대체 시간',
+          '🔄 대체 시간',
 
         OUT_OF_PERIOD:
-          '기간 외',
+          '⏰ 기간 외',
 
         IGNORED:
-          '확인 제외',
+          '➖ 확인 제외',
 
         UNKNOWN:
-          '결과 없음'
+          '⚠️ 결과 없음'
       };
 
-      return labels[status] ||
+      return (
+        labels[status] ||
         status ||
-        '알 수 없음';
+        '알 수 없음'
+      );
     }
 
     function setFilter(
       filter,
       button
     ) {
-      currentFilter = filter;
+      activeFilter = filter;
 
-      updateFilterButtons(button);
+      updateFilterButtons(
+        button
+      );
+
       renderRows();
     }
 
@@ -965,47 +1015,56 @@
           '.filter-button'
         )
         .forEach(function(button) {
-          const isActive =
+          const active =
             selectedButton
               ? button === selectedButton
               : button.dataset.filter ===
-                currentFilter;
+                activeFilter;
 
           button.classList.toggle(
             'active',
-            isActive
+            active
           );
         });
     }
 
-    function validateClientInput(input) {
-      if (!/^[A-Z]{4}$/.test(
-        input.airport
-      )) {
+    function validateRequest(request) {
+      if (
+        !/^[A-Z]{4}$/.test(
+          request.departureAirport
+        )
+      ) {
         return (
-          '조회 공항을 4자리 ICAO 코드로 입력하세요.'
+          '출발 공항 ICAO 코드를 4자리로 입력하세요.'
         );
       }
 
-      if (!/^[A-Z]{4}$/.test(
-        input.otherAirport
-      )) {
+      if (
+        !/^[A-Z]{4}$/.test(
+          request.arrivalAirport
+        )
+      ) {
         return (
-          '상대 공항을 4자리 ICAO 코드로 입력하세요.'
+          '도착 공항 ICAO 코드를 4자리로 입력하세요.'
         );
       }
 
-      if (!/^\d{4}\/\d{2}\/\d{2}$/.test(
-        input.date
-      )) {
+      if (
+        !/^\d{4}\/\d{2}\/\d{2}$/.test(
+          request.date
+        )
+      ) {
         return (
           '조회 날짜를 입력하세요.'
         );
       }
 
-      if (!Number.isFinite(
-        input.flightDurationMinutes
-      )) {
+      if (
+        !Number.isFinite(
+          request.flightDurationMinutes
+        ) ||
+        request.flightDurationMinutes < 0
+      ) {
         return (
           '비행시간을 분 단위로 입력하세요.'
         );
@@ -1021,40 +1080,44 @@
           'departure';
 
       document
-        .getElementById('airport')
+        .getElementById(
+          'departureAirport'
+        )
         .value =
           '';
 
       document
-        .getElementById('otherAirport')
+        .getElementById(
+          'arrivalAirport'
+        )
         .value =
           '';
 
       document
-        .getElementById('duration')
+        .getElementById(
+          'duration'
+        )
         .value =
           '120';
 
       setDefaultDate();
 
-      resultRows = [];
-      currentFilter = 'ALL';
+      allRows = [];
+      activeFilter = 'ALL';
 
-      clearMessages();
+      clearError();
 
       document
-        .getElementById(
-          'resultSection'
-        )
+        .getElementById('results')
         .style.display =
           'none';
     }
 
-    function setLoading(isLoading) {
+    function setLoading(loading) {
       document
         .getElementById('loading')
         .style.display =
-          isLoading
+          loading
             ? 'block'
             : 'none';
 
@@ -1063,35 +1126,14 @@
           'searchButton'
         )
         .disabled =
-          isLoading;
+          loading;
 
       document
         .getElementById(
           'resetButton'
         )
         .disabled =
-          isLoading;
-    }
-
-    function showResultSection() {
-      document
-        .getElementById(
-          'resultSection'
-        )
-        .style.display =
-          'block';
-    }
-
-    function clearMessages() {
-      document
-        .getElementById('error')
-        .style.display =
-          'none';
-
-      document
-        .getElementById('error')
-        .textContent =
-          '';
+          loading;
     }
 
     function showError(message) {
@@ -1107,11 +1149,26 @@
         'block';
     }
 
+    function clearError() {
+      const element =
+        document.getElementById(
+          'error'
+        );
+
+      element.textContent = '';
+      element.style.display = 'none';
+    }
+
     function getValue(id) {
       return document
         .getElementById(id)
         .value
         .trim();
+    }
+
+    function normalizeDate(value) {
+      return String(value)
+        .replace(/-/g, '/');
     }
 
     function setText(id, value) {
@@ -1121,15 +1178,10 @@
           String(value);
     }
 
-    function normalizeDate(value) {
-      return String(value)
-        .replace(/-/g, '/');
-    }
-
     function escapeHtml(value) {
       return String(
-        value === undefined ||
-        value === null
+        value === null ||
+        value === undefined
           ? ''
           : value
       )

@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <base target="_top">
-
   <meta charset="UTF-8">
 
   <meta
@@ -22,19 +20,19 @@
       --primary: #1769e0;
       --primary-hover: #1058bd;
 
-      --available-background: #e9f9f0;
+      --available-bg: #e9f9f0;
       --available-text: #087443;
 
-      --unavailable-background: #fff0f0;
+      --unavailable-bg: #fff0f0;
       --unavailable-text: #b42318;
 
-      --alternative-background: #fff7e4;
+      --alternative-bg: #fff7e4;
       --alternative-text: #8b5b00;
 
-      --period-background: #edf3ff;
+      --period-bg: #edf3ff;
       --period-text: #344f9b;
 
-      --ignored-background: #f2f4f7;
+      --ignored-bg: #f2f4f7;
       --ignored-text: #667085;
     }
 
@@ -124,7 +122,11 @@
     }
 
     .button-row {
-      display: flex;
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1fr)
+        auto
+        auto;
       gap: 10px;
       margin-top: 18px;
     }
@@ -145,7 +147,6 @@
     }
 
     .primary-button {
-      flex: 1;
       background: var(--primary);
       color: white;
     }
@@ -171,6 +172,25 @@
       line-height: 1.6;
     }
 
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      margin-right: 8px;
+      border: 2px solid
+        rgba(52, 79, 155, 0.25);
+      border-top-color: #344f9b;
+      border-radius: 50%;
+      vertical-align: middle;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
     .error {
       display: none;
       margin-top: 17px;
@@ -181,6 +201,17 @@
       color: #a51d1d;
       white-space: pre-wrap;
       line-height: 1.55;
+    }
+
+    .connection-result {
+      display: none;
+      margin-top: 17px;
+      padding: 13px;
+      border-radius: 10px;
+      background: var(--available-bg);
+      color: var(--available-text);
+      text-align: center;
+      font-weight: 700;
     }
 
     .results {
@@ -309,28 +340,28 @@
     }
 
     .status-AVAILABLE {
-      background: var(--available-background);
+      background: var(--available-bg);
       color: var(--available-text);
     }
 
     .status-UNAVAILABLE {
-      background: var(--unavailable-background);
+      background: var(--unavailable-bg);
       color: var(--unavailable-text);
     }
 
     .status-ALTERNATIVE {
-      background: var(--alternative-background);
+      background: var(--alternative-bg);
       color: var(--alternative-text);
     }
 
     .status-OUT_OF_PERIOD {
-      background: var(--period-background);
+      background: var(--period-bg);
       color: var(--period-text);
     }
 
     .status-IGNORED,
     .status-UNKNOWN {
-      background: var(--ignored-background);
+      background: var(--ignored-bg);
       color: var(--ignored-text);
     }
 
@@ -378,7 +409,6 @@
       }
 
       .button-row {
-        display: grid;
         grid-template-columns: 1fr;
       }
 
@@ -401,7 +431,9 @@
 <body>
   <main class="page">
     <header class="page-header">
-      <h1>Japan Slot Availability</h1>
+      <h1>
+        Japan Slot Availability
+      </h1>
 
       <p>
         일본 공항의 출발 또는 도착 슬롯을
@@ -454,6 +486,7 @@
 
       <div class="button-row">
         <button
+          type="button"
           id="searchButton"
           class="primary-button"
           onclick="runSearch()"
@@ -462,6 +495,16 @@
         </button>
 
         <button
+          type="button"
+          id="connectionButton"
+          class="secondary-button"
+          onclick="testBackendConnection()"
+        >
+          연결 확인
+        </button>
+
+        <button
+          type="button"
           id="resetButton"
           class="secondary-button"
           onclick="resetForm()"
@@ -474,9 +517,15 @@
         id="loading"
         class="loading"
       >
-        SWIM 로그인 및 49개 시간대를 확인하고 있습니다.<br>
+        <span class="spinner"></span>
+        49개 시간대의 슬롯을 확인하고 있습니다.<br>
         잠시 기다려 주세요.
       </div>
+
+      <div
+        id="connectionResult"
+        class="connection-result"
+      ></div>
 
       <div
         id="error"
@@ -488,7 +537,9 @@
         class="results"
       >
         <div class="result-heading">
-          <h2>조회 결과</h2>
+          <h2>
+            조회 결과
+          </h2>
 
           <div
             id="checkedAt"
@@ -565,6 +616,7 @@
 
         <div class="filter-row">
           <button
+            type="button"
             class="filter-button active"
             data-filter="ALL"
             onclick="setFilter('ALL', this)"
@@ -573,6 +625,7 @@
           </button>
 
           <button
+            type="button"
             class="filter-button"
             data-filter="AVAILABLE"
             onclick="setFilter('AVAILABLE', this)"
@@ -581,6 +634,7 @@
           </button>
 
           <button
+            type="button"
             class="filter-button"
             data-filter="UNAVAILABLE"
             onclick="setFilter('UNAVAILABLE', this)"
@@ -589,6 +643,7 @@
           </button>
 
           <button
+            type="button"
             class="filter-button"
             data-filter="ALTERNATIVE"
             onclick="setFilter('ALTERNATIVE', this)"
@@ -614,14 +669,32 @@
 
         <div class="note">
           2400L은 다음 날짜 00:00으로 변환하여 조회합니다.
-          조회 기준에서 출발을 선택하면 출발 슬롯,
-          도착을 선택하면 도착 슬롯 결과를 표시합니다.
+          출발을 선택하면 출발 슬롯을 확인하고,
+          도착을 선택하면 도착 슬롯을 확인합니다.
         </div>
       </section>
     </section>
   </main>
 
   <script>
+    /*
+     * 반드시 실제 Apps Script 웹앱 URL로 교체
+     *
+     * 예:
+     * https://script.google.com/macros/s/AKfycbxxxxxxxx/exec
+     */
+    const BACKEND_URL =
+      'https://script.google.com/macros/s/AKfycbwgM3HlDeB6LO6A-AmESiG7KBGA9lsrloLxt0S70ix-QY7Z8WyungoG9rO19FGOQGN7MQ/exec';
+
+    const FRONTEND_API_KEY =
+      'slot-app-2026-MOMOBOMI';
+
+    /*
+     * 백엔드 응답 대기 제한
+     */
+    const REQUEST_TIMEOUT_MS =
+      120000;
+
     let allRows = [];
     let activeFilter = 'ALL';
 
@@ -662,8 +735,8 @@
         );
     }
 
-    function runSearch() {
-      clearError();
+    async function runSearch() {
+      clearMessages();
 
       const request = {
         mode:
@@ -693,19 +766,176 @@
 
       setLoading(true);
 
-      google.script.run
-        .withSuccessHandler(
-          handleSuccess
-        )
-        .withFailureHandler(
-          handleFailure
-        )
-        .checkFullDaySlots(request);
+      try {
+        const result =
+          await callBackend({
+            action:
+              'checkFullDaySlots',
+
+            apiKey:
+              FRONTEND_API_KEY,
+
+            data:
+              request
+          });
+
+        handleSuccess(result);
+
+      } catch (error) {
+        handleFailure(error);
+
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    async function testBackendConnection() {
+      clearMessages();
+      setConnectionLoading(true);
+
+      try {
+        const result =
+          await callBackend({
+            action: 'ping',
+            apiKey: FRONTEND_API_KEY
+          });
+
+        if (
+          !result ||
+          result.success !== true
+        ) {
+          throw new Error(
+            result && result.message
+              ? result.message
+              : '백엔드 연결에 실패했습니다.'
+          );
+        }
+
+        const message =
+          result.timestamp
+            ? `백엔드 연결 성공 · ${result.timestamp}`
+            : '백엔드 연결 성공';
+
+        showConnectionResult(message);
+
+      } catch (error) {
+        showError(
+          '백엔드 연결 실패\n' +
+          (
+            error && error.message
+              ? error.message
+              : String(error)
+          )
+        );
+
+      } finally {
+        setConnectionLoading(false);
+      }
+    }
+
+    async function callBackend(payload) {
+      validateBackendUrl();
+
+      const controller =
+        new AbortController();
+
+      const timeoutId =
+        setTimeout(
+          function() {
+            controller.abort();
+          },
+          REQUEST_TIMEOUT_MS
+        );
+
+      try {
+        /*
+         * text/plain 사용:
+         * OPTIONS preflight 요청을 피하기 위한 방식
+         */
+        const response =
+          await fetch(
+            BACKEND_URL,
+            {
+              method: 'POST',
+
+              headers: {
+                'Content-Type':
+                  'text/plain;charset=UTF-8'
+              },
+
+              body:
+                JSON.stringify(payload),
+
+              redirect:
+                'follow',
+
+              signal:
+                controller.signal,
+
+              cache:
+                'no-store'
+            }
+          );
+
+        if (!response.ok) {
+          throw new Error(
+            `백엔드 HTTP 오류: ${response.status}`
+          );
+        }
+
+        const responseText =
+          await response.text();
+
+        if (!responseText) {
+          throw new Error(
+            '백엔드 응답이 비어 있습니다.'
+          );
+        }
+
+        try {
+          return JSON.parse(
+            responseText
+          );
+
+        } catch (error) {
+          throw new Error(
+            '백엔드 응답이 JSON 형식이 아닙니다.\n' +
+            responseText.substring(0, 500)
+          );
+        }
+
+      } catch (error) {
+        if (
+          error &&
+          error.name === 'AbortError'
+        ) {
+          throw new Error(
+            '백엔드 응답 시간이 초과되었습니다.'
+          );
+        }
+
+        throw error;
+
+      } finally {
+        clearTimeout(timeoutId);
+      }
+    }
+
+    function validateBackendUrl() {
+      if (
+        !BACKEND_URL ||
+        BACKEND_URL.includes(
+          '여기에_배포_ID'
+        ) ||
+        !BACKEND_URL.endsWith('/exec')
+      ) {
+        throw new Error(
+          '프론트 코드의 BACKEND_URL에 실제 Apps Script /exec 주소를 입력하세요.'
+        );
+      }
     }
 
     function handleSuccess(response) {
-      setLoading(false);
-
       if (
         !response ||
         response.success !== true
@@ -734,10 +964,17 @@
       updateFilterButtons();
       renderRows();
 
+      const elapsedText =
+        response.elapsedSeconds !==
+        undefined
+          ? ` · 소요시간: ${response.elapsedSeconds}초`
+          : '';
+
       document
         .getElementById('checkedAt')
         .textContent =
-          `조회 시각: ${response.checkedAt}`;
+          `조회 시각: ${response.checkedAt || '-'}` +
+          elapsedText;
 
       document
         .getElementById('results')
@@ -745,8 +982,6 @@
     }
 
     function handleFailure(error) {
-      setLoading(false);
-
       showError(
         error && error.message
           ? error.message
@@ -929,12 +1164,12 @@
 
     function setFilter(
       filter,
-      button
+      selectedButton
     ) {
       activeFilter = filter;
 
       updateFilterButtons(
-        button
+        selectedButton
       );
 
       renderRows();
@@ -1004,11 +1239,13 @@
       allRows = [];
       activeFilter = 'ALL';
 
-      clearError();
+      clearMessages();
 
       document
         .getElementById('results')
         .style.display = 'none';
+
+      updateFilterButtons();
     }
 
     function setLoading(loading) {
@@ -1027,9 +1264,43 @@
 
       document
         .getElementById(
+          'connectionButton'
+        )
+        .disabled = loading;
+
+      document
+        .getElementById(
           'resetButton'
         )
         .disabled = loading;
+    }
+
+    function setConnectionLoading(
+      loading
+    ) {
+      const button =
+        document.getElementById(
+          'connectionButton'
+        );
+
+      button.disabled = loading;
+
+      button.textContent =
+        loading
+          ? '연결 중...'
+          : '연결 확인';
+    }
+
+    function showConnectionResult(
+      message
+    ) {
+      const element =
+        document.getElementById(
+          'connectionResult'
+        );
+
+      element.textContent = message;
+      element.style.display = 'block';
     }
 
     function showError(message) {
@@ -1042,14 +1313,26 @@
       element.style.display = 'block';
     }
 
-    function clearError() {
-      const element =
+    function clearMessages() {
+      const errorElement =
         document.getElementById(
           'error'
         );
 
-      element.textContent = '';
-      element.style.display = 'none';
+      const connectionElement =
+        document.getElementById(
+          'connectionResult'
+        );
+
+      errorElement.textContent = '';
+      errorElement.style.display =
+        'none';
+
+      connectionElement.textContent =
+        '';
+
+      connectionElement.style.display =
+        'none';
     }
 
     function getValue(id) {

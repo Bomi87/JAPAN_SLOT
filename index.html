@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1"
@@ -41,6 +42,7 @@
       margin: 0;
       background: var(--background);
       color: var(--text);
+
       font-family:
         Arial,
         "Noto Sans KR",
@@ -73,6 +75,7 @@
       border: 1px solid var(--border);
       border-radius: 17px;
       background: var(--card);
+
       box-shadow:
         0 8px 28px
         rgba(16, 24, 40, 0.07);
@@ -80,15 +83,18 @@
 
     .form-grid {
       display: grid;
+
       grid-template-columns:
         0.9fr
         1fr
         1fr;
+
       gap: 14px;
       align-items: end;
     }
 
-    .field label {
+    .field label,
+    .compact-field label {
       display: block;
       margin-bottom: 7px;
       color: #475467;
@@ -113,18 +119,20 @@
       outline:
         3px solid
         rgba(23, 105, 224, 0.14);
+
       border-color: var(--primary);
     }
 
-    .main-action-row {
+    .action-section {
       display: grid;
+
       grid-template-columns:
-        minmax(260px, 1fr)
-        auto
-        auto;
-      gap: 12px;
-      align-items: end;
+        minmax(320px, 1fr)
+        minmax(470px, 0.95fr);
+
+      gap: 14px;
       margin-top: 18px;
+      align-items: end;
     }
 
     .full-day-button {
@@ -145,20 +153,14 @@
 
     .single-check-row {
       display: grid;
+
       grid-template-columns:
-        170px
-        100px
-        minmax(190px, 260px);
+        minmax(150px, 0.8fr)
+        110px
+        minmax(180px, 1fr);
+
       gap: 10px;
       align-items: end;
-    }
-
-    .compact-field label {
-      display: block;
-      margin-bottom: 7px;
-      color: #475467;
-      font-size: 13px;
-      font-weight: 700;
     }
 
     button {
@@ -177,12 +179,12 @@
     }
 
     .single-search-button {
-      background: #1f6fe5;
+      background: var(--primary);
       color: white;
     }
 
     .single-search-button:hover {
-      background: #155dc0;
+      background: var(--primary-hover);
     }
 
     .secondary-button {
@@ -193,20 +195,22 @@
 
     .utility-row {
       display: flex;
-      gap: 10px;
       justify-content: flex-end;
+      gap: 10px;
       margin-top: 12px;
     }
 
     .inline-result {
       min-height: 48px;
-      padding: 10px 14px;
-      border-radius: 10px;
+      padding: 9px 14px;
       border: 1px solid #d0d7e2;
+      border-radius: 10px;
       background: #f8fafc;
+
       display: flex;
       flex-direction: column;
       justify-content: center;
+
       font-weight: 700;
       line-height: 1.35;
     }
@@ -293,8 +297,8 @@
     .result-title-row {
       display: flex;
       justify-content: space-between;
-      gap: 12px;
       align-items: center;
+      gap: 12px;
       margin-bottom: 18px;
       flex-wrap: wrap;
     }
@@ -305,36 +309,12 @@
     }
 
     .result-subtitle {
+      margin-top: 5px;
       color: var(--muted);
       font-size: 13px;
     }
 
-    .summary-grid {
-      display: grid;
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .summary-card {
-      padding: 16px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: white;
-    }
-
-    .summary-label {
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .summary-value {
-      font-size: 24px;
-      font-weight: 800;
-    }
+ 
 
     .table-wrap {
       overflow-x: auto;
@@ -345,18 +325,18 @@
 
     table {
       width: 100%;
-      border-collapse: collapse;
       min-width: 720px;
+      border-collapse: collapse;
     }
 
     thead th {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
       background: #f7f9fc;
       color: #475467;
       text-align: left;
       font-size: 13px;
       font-weight: 800;
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
     }
 
     tbody td {
@@ -373,8 +353,8 @@
     .status-chip {
       display: inline-block;
       padding: 7px 12px;
-      border-radius: 999px;
       border: 1px solid transparent;
+      border-radius: 999px;
       font-size: 13px;
       font-weight: 800;
       white-space: nowrap;
@@ -411,19 +391,15 @@
     }
 
     @media (max-width: 1000px) {
-      .main-action-row {
+      .action-section {
         grid-template-columns: 1fr;
       }
 
       .single-check-row {
         grid-template-columns:
-          minmax(160px, 1fr)
-          100px
+          minmax(150px, 1fr)
+          110px
           minmax(180px, 1fr);
-      }
-
-      .utility-row {
-        justify-content: flex-start;
       }
     }
 
@@ -442,20 +418,12 @@
         padding: 14px;
       }
 
-      .main-action-row {
-        gap: 16px;
-      }
-
       .utility-row {
         flex-direction: column;
       }
 
       .utility-row button {
         width: 100%;
-      }
-
-      .inline-result {
-        min-height: auto;
       }
     }
   </style>
@@ -464,7 +432,10 @@
 <body>
   <main class="page">
     <header class="page-header">
-      <h1>Japan Slot Availability</h1>
+      <h1>
+        Japan Slot Availability
+      </h1>
+
       <p>
         일본 공항의 출발 또는 도착 슬롯을 조회합니다.
       </p>
@@ -473,15 +444,29 @@
     <section class="panel">
       <div class="form-grid">
         <div class="field">
-          <label for="mode">조회 기준</label>
+          <label for="mode">
+            조회 기준
+          </label>
+
           <select id="mode">
-            <option value="arrival" selected>도착</option>
-            <option value="departure">출발</option>
+            <option
+              value="arrival"
+              selected
+            >
+              도착
+            </option>
+
+            <option value="departure">
+              출발
+            </option>
           </select>
         </div>
 
         <div class="field">
-          <label for="airport">공항 ICAO</label>
+          <label for="airport">
+            공항 ICAO
+          </label>
+
           <input
             id="airport"
             maxlength="4"
@@ -491,7 +476,10 @@
         </div>
 
         <div class="field">
-          <label for="date">기준 날짜</label>
+          <label for="date">
+            기준 날짜
+          </label>
+
           <input
             id="date"
             type="date"
@@ -499,7 +487,7 @@
         </div>
       </div>
 
-      <div class="main-action-row">
+      <div class="action-section">
         <button
           type="button"
           id="fullDayButton"
@@ -511,8 +499,19 @@
 
         <div class="single-check-row">
           <div class="compact-field">
-            <label for="time">기준 시간</label>
-            <select id="time"></select>
+            <label for="time">
+              기준 시간
+            </label>
+
+            <input
+              id="time"
+              type="text"
+              value="12:00"
+              maxlength="5"
+              inputmode="numeric"
+              placeholder="예: 12:05"
+              autocomplete="off"
+            >
           </div>
 
           <button
@@ -528,7 +527,9 @@
             id="singleResultInline"
             class="inline-result empty"
           >
-            <div class="inline-result-main">-</div>
+            <div class="inline-result-main">
+              -
+            </div>
           </div>
         </div>
       </div>
@@ -574,7 +575,10 @@
       >
         <div class="result-title-row">
           <div>
-            <div class="result-title">1일 전체 슬롯 조회 결과</div>
+            <div class="result-title">
+              1일 전체 슬롯 조회 결과
+            </div>
+
             <div
               id="resultSubtitle"
               class="result-subtitle"
@@ -582,46 +586,27 @@
           </div>
         </div>
 
-        <div class="summary-grid">
-          <div class="summary-card">
-            <div class="summary-label">가능</div>
-            <div
-              id="summaryAvailable"
-              class="summary-value"
-            >
-              0
-            </div>
-          </div>
-
-          <div class="summary-card">
-            <div class="summary-label">대체 시간</div>
-            <div
-              id="summaryAlternative"
-              class="summary-value"
-            >
-              0
-            </div>
-          </div>
-
-          <div class="summary-card">
-            <div class="summary-label">불가</div>
-            <div
-              id="summaryUnavailable"
-              class="summary-value"
-            >
-              0
-            </div>
-          </div>
-        </div>
+      
 
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th style="width: 110px;">시간</th>
-                <th style="width: 130px;">결과</th>
-                <th>대체 시간</th>
-                <th style="width: 150px;">요청값</th>
+                <th style="width: 110px;">
+                  시간
+                </th>
+
+                <th style="width: 135px;">
+                  결과
+                </th>
+
+                <th>
+                  대체 시간
+                </th>
+
+                <th style="width: 180px;">
+                  요청값
+                </th>
               </tr>
             </thead>
 
@@ -638,69 +623,47 @@
   </main>
 
   <script>
-    /*
-     * 아래 2개 값은 현재 사용 중인 값으로 넣으세요.
-     */
     const BACKEND_URL =
       'https://script.google.com/macros/s/AKfycbwgM3HlDeB6LO6A-AmESiG7KBGA9lsrloLxt0S70ix-QY7Z8WyungoG9rO19FGOQGN7MQ/exec';
 
     const FRONTEND_API_KEY =
       'slot-app-2026-MOMOBOMI';
 
-    const REQUEST_TIMEOUT_MS = 60000;
+    const REQUEST_TIMEOUT_MS =
+      120000;
 
     initialize();
 
     function initialize() {
       setDefaultDate();
-      createTimeOptions();
+      setDefaultTime();
       bindAirportInput();
+      bindTimeInput();
     }
 
     function setDefaultDate() {
-      const now = new Date();
+      const now =
+        new Date();
 
-      const localDate = new Date(
-        now.getTime() -
-        now.getTimezoneOffset() * 60000
-      );
+      const localDate =
+        new Date(
+          now.getTime() -
+          now.getTimezoneOffset() * 60000
+        );
 
-      document.getElementById('date').value =
-        localDate.toISOString().substring(0, 10);
+      document
+        .getElementById('date')
+        .value =
+          localDate
+            .toISOString()
+            .substring(0, 10);
     }
 
-    function createTimeOptions() {
-      const select =
-        document.getElementById('time');
-
-      let html = '';
-
-      for (let index = 0; index <= 48; index++) {
-        const totalMinutes = index * 30;
-        const hour = Math.floor(totalMinutes / 60);
-        const minute = totalMinutes % 60;
-
-        const value =
-          index === 48
-            ? '24:00'
-            : String(hour).padStart(2, '0') +
-              ':' +
-              String(minute).padStart(2, '0');
-
-        const label =
-          index === 48
-            ? '2400L'
-            : value.replace(':', '') + 'L';
-
-        html += `
-          <option value="${value}">
-            ${label}
-          </option>
-        `;
-      }
-
-      select.innerHTML = html;
-      select.value = '12:00';
+    function setDefaultTime() {
+      document
+        .getElementById('time')
+        .value =
+          '12:00';
     }
 
     function bindAirportInput() {
@@ -718,11 +681,166 @@
         );
     }
 
+    function bindTimeInput() {
+      const timeInput =
+        document.getElementById('time');
+
+      timeInput.addEventListener(
+        'input',
+        function() {
+          let digits =
+            this.value.replace(/\D/g, '');
+
+          digits =
+            digits.substring(0, 4);
+
+          if (digits.length <= 2) {
+            this.value =
+              digits;
+
+          } else {
+            this.value =
+              digits.substring(0, 2) +
+              ':' +
+              digits.substring(2);
+          }
+        }
+      );
+
+      timeInput.addEventListener(
+        'blur',
+        function() {
+          const normalized =
+            normalizeManualTime(
+              this.value
+            );
+
+          if (normalized) {
+            this.value =
+              normalized;
+          }
+        }
+      );
+
+      timeInput.addEventListener(
+        'keydown',
+        function(event) {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            runSingleSearch();
+          }
+        }
+      );
+    }
+
+    function normalizeManualTime(value) {
+      const text =
+        String(value || '')
+          .trim()
+          .replace(/[^\d:]/g, '');
+
+      if (!text) {
+        return '';
+      }
+
+      if (text === '2400') {
+        return '24:00';
+      }
+
+      if (text === '24:00') {
+        return '24:00';
+      }
+
+      if (/^\d{1,2}$/.test(text)) {
+        const hour =
+          Number(text);
+
+        if (
+          hour >= 0 &&
+          hour <= 23
+        ) {
+          return (
+            String(hour)
+              .padStart(2, '0') +
+            ':00'
+          );
+        }
+      }
+
+      if (/^\d{3,4}$/.test(text)) {
+        const padded =
+          text.padStart(4, '0');
+
+        const hour =
+          Number(
+            padded.substring(0, 2)
+          );
+
+        const minute =
+          Number(
+            padded.substring(2, 4)
+          );
+
+        if (
+          hour >= 0 &&
+          hour <= 23 &&
+          minute >= 0 &&
+          minute <= 59
+        ) {
+          return (
+            String(hour)
+              .padStart(2, '0') +
+            ':' +
+            String(minute)
+              .padStart(2, '0')
+          );
+        }
+      }
+
+      const match =
+        text.match(
+          /^(\d{1,2}):(\d{1,2})$/
+        );
+
+      if (match) {
+        const hour =
+          Number(match[1]);
+
+        const minute =
+          Number(match[2]);
+
+        if (
+          hour >= 0 &&
+          hour <= 23 &&
+          minute >= 0 &&
+          minute <= 59
+        ) {
+          return (
+            String(hour)
+              .padStart(2, '0') +
+            ':' +
+            String(minute)
+              .padStart(2, '0')
+          );
+        }
+      }
+
+      return '';
+    }
+
     function buildBaseRequest() {
       return {
-        mode: getValue('mode'),
-        airport: getValue('airport').toUpperCase(),
-        date: normalizeDate(getValue('date'))
+        mode:
+          getValue('mode'),
+
+        airport:
+          getValue('airport')
+            .toUpperCase(),
+
+        date:
+          normalizeDate(
+            getValue('date')
+          )
       };
     }
 
@@ -730,12 +848,19 @@
       clearMessages();
       hideFullDayPanel();
 
-      const request = buildBaseRequest();
+      const request =
+        buildBaseRequest();
+
       const validationError =
-        validateBaseRequest(request);
+        validateBaseRequest(
+          request
+        );
 
       if (validationError) {
-        showError(validationError);
+        showError(
+          validationError
+        );
+
         return;
       }
 
@@ -747,12 +872,19 @@
       try {
         const response =
           await callBackend({
-            action: 'checkFullDaySlots',
-            apiKey: FRONTEND_API_KEY,
-            data: request
+            action:
+              'checkFullDaySlots',
+
+            apiKey:
+              FRONTEND_API_KEY,
+
+            data:
+              request
           });
 
-        renderFullDayResult(response);
+        renderFullDayResult(
+          response
+        );
 
       } catch (error) {
         showError(
@@ -762,23 +894,49 @@
         );
 
       } finally {
-        setLoading(false);
+        setLoading(
+          false
+        );
       }
     }
 
     async function runSingleSearch() {
       clearMessages();
 
-      const request = buildBaseRequest();
-      request.time = getValue('time');
+      const request =
+        buildBaseRequest();
+
+      const normalizedTime =
+        normalizeManualTime(
+          getValue('time')
+        );
+
+      if (normalizedTime) {
+        document
+          .getElementById('time')
+          .value =
+            normalizedTime;
+      }
+
+      request.time =
+        normalizedTime;
 
       const validationError =
-        validateSingleRequest(request);
+        validateSingleRequest(
+          request
+        );
 
       if (validationError) {
-        showError(validationError);
+        showError(
+          validationError
+        );
+
         return;
       }
+
+      resetSingleResult(
+        '조회 중...'
+      );
 
       setLoading(
         true,
@@ -788,14 +946,23 @@
       try {
         const response =
           await callBackend({
-            action: 'checkSingleSlot',
-            apiKey: FRONTEND_API_KEY,
-            data: request
+            action:
+              'checkSingleSlot',
+
+            apiKey:
+              FRONTEND_API_KEY,
+
+            data:
+              request
           });
 
-        renderSingleInlineResult(response);
+        renderSingleInlineResult(
+          response
+        );
 
       } catch (error) {
+        resetSingleResult('-');
+
         showError(
           error && error.message
             ? error.message
@@ -803,22 +970,38 @@
         );
 
       } finally {
-        setLoading(false);
+        setLoading(
+          false
+        );
       }
     }
 
-    function renderSingleInlineResult(response) {
-      if (!response || response.success !== true) {
+    function renderSingleInlineResult(
+      response
+    ) {
+      if (
+        !response ||
+        response.success !== true
+      ) {
+        resetSingleResult('-');
+
         showError(
-          response && response.message
+          response &&
+          response.message
             ? response.message
             : '조회에 실패했습니다.'
         );
+
         return;
       }
 
-      const row = response.result || {};
-      const info = resolveStatusInfo(row);
+      const row =
+        response.result || {};
+
+      const info =
+        resolveStatusInfo(
+          row
+        );
 
       const element =
         document.getElementById(
@@ -826,12 +1009,14 @@
         );
 
       element.className =
-        'inline-result status-' + info.type;
+        'inline-result status-' +
+        info.type;
 
       element.innerHTML = `
         <div class="inline-result-main">
           ${escapeHtml(info.label)}
         </div>
+
         ${
           info.detail
             ? `
@@ -844,161 +1029,302 @@
       `;
     }
 
-    function renderFullDayResult(response) {
-      if (!response || response.success !== true) {
+    function renderFullDayResult(
+      response
+    ) {
+      if (
+        !response ||
+        response.success !== true
+      ) {
         showError(
-          response && response.message
+          response &&
+          response.message
             ? response.message
             : '조회에 실패했습니다.'
         );
+
         return;
       }
 
       const rows =
-        Array.isArray(response.rows)
+        Array.isArray(
+          response.rows
+        )
           ? response.rows
           : [];
 
-      let availableCount = 0;
-      let alternativeCount = 0;
-      let unavailableCount = 0;
+  
+      const html =
+        rows
+          .map(
+            function(row) {
+              const info =
+                resolveStatusInfo(
+                  row
+                );
 
-      const html = rows
-        .map(function(row) {
-          const info = resolveStatusInfo(row);
+           
 
-          if (info.type === 'AVAILABLE') {
-            availableCount++;
-          } else if (info.type === 'ALTERNATIVE') {
-            alternativeCount++;
-          } else {
-            unavailableCount++;
-          }
+              return `
+                <tr>
+                  <td>
+                    ${escapeHtml(
+                      row.displayTime || '-'
+                    )}
+                  </td>
 
-          return `
-            <tr>
-              <td>${escapeHtml(row.displayTime || '-')}</td>
-              <td>
-                <span class="status-chip chip-${info.type}">
-                  ${escapeHtml(info.label)}
-                </span>
-              </td>
-              <td class="alt-text">
-                ${escapeHtml(info.altText || '-')}
-              </td>
-              <td>
-                ${escapeHtml(
-                  (row.requestDate || '-') +
-                  ' ' +
-                  (row.requestTime || '-')
-                )}
-              </td>
-            </tr>
-          `;
-        })
-        .join('');
+                  <td>
+                    <span
+                      class="status-chip chip-${info.type}"
+                    >
+                      ${escapeHtml(info.label)}
+                    </span>
+                  </td>
 
-      document.getElementById(
-        'summaryAvailable'
-      ).textContent = String(availableCount);
+                  <td class="alt-text">
+                    ${escapeHtml(
+                      info.altText || '-'
+                    )}
+                  </td>
 
-      document.getElementById(
-        'summaryAlternative'
-      ).textContent = String(alternativeCount);
+                  <td>
+                    ${escapeHtml(
+                      (row.requestDate || '-') +
+                      ' ' +
+                      (row.requestTime || '-')
+                    )}
+                  </td>
+                </tr>
+              `;
+            }
+          )
+          .join('');
 
-      document.getElementById(
-        'summaryUnavailable'
-      ).textContent = String(unavailableCount);
+     
+
+      const modeLabel =
+        response.input &&
+        response.input.mode ===
+          'departure'
+          ? '출발'
+          : '도착';
 
       const subtitle =
         [
-          response.input &&
-          response.input.mode === 'departure'
-            ? '출발'
-            : '도착',
+          modeLabel,
+
           response.input
             ? response.input.airport
             : '-',
+
           response.input
             ? response.input.date
             : '-'
         ].join(' / ');
 
-      document.getElementById(
-        'resultSubtitle'
-      ).textContent = subtitle;
+      document
+        .getElementById(
+          'resultSubtitle'
+        )
+        .textContent =
+          subtitle;
 
-      document.getElementById(
-        'fullDayTableBody'
-      ).innerHTML = html;
+      document
+        .getElementById(
+          'fullDayTableBody'
+        )
+        .innerHTML =
+          html;
 
       const elapsed =
-        response.elapsedSeconds !== undefined
+        response.elapsedSeconds !==
+        undefined
           ? ' · 소요시간: ' +
             response.elapsedSeconds +
             '초'
           : '';
 
-      document.getElementById(
-        'checkedAt'
-      ).textContent =
-        '조회 시각: ' +
-        (response.checkedAt || '-') +
-        elapsed;
+      document
+        .getElementById(
+          'checkedAt'
+        )
+        .textContent =
+          '조회 시각: ' +
+          (
+            response.checkedAt ||
+            '-'
+          ) +
+          elapsed;
 
-      document.getElementById(
-        'resultPanel'
-      ).style.display = 'block';
+      document
+        .getElementById(
+          'resultPanel'
+        )
+        .style.display =
+          'block';
     }
 
-    function resolveStatusInfo(row) {
+    function resolveStatusInfo(
+      row
+    ) {
       const alternatives =
-        getNormalizedAlternatives(row);
+        getNormalizedAlternatives(
+          row
+        );
 
-      if (alternatives.length > 0) {
+      /*
+       * 실제 대체 시간 값이 있을 때만
+       * 대체 시간으로 표시
+       */
+      if (
+        alternatives.length > 0
+      ) {
         return {
-          type: 'ALTERNATIVE',
-          label: '대체 시간',
-          detail: alternatives.join(', '),
-          altText: alternatives.join(', ')
+          type:
+            'ALTERNATIVE',
+
+          label:
+            '대체 시간',
+
+          detail:
+            alternatives.join(', '),
+
+          altText:
+            alternatives.join(', ')
         };
       }
 
+      /*
+       * 슬롯 가능
+       */
       if (
         row &&
         (
-          row.status === 'AVAILABLE' ||
+          row.status ===
+            'AVAILABLE' ||
           row.ok === true
         )
       ) {
         return {
-          type: 'AVAILABLE',
-          label: '가능',
-          detail: '',
-          altText: '-'
+          type:
+            'AVAILABLE',
+
+          label:
+            '가능',
+
+          detail:
+            '',
+
+          altText:
+            '-'
         };
       }
 
+      /*
+       * 나머지는 전부 불가
+       */
       return {
-        type: 'UNAVAILABLE',
-        label: '불가',
-        detail: '',
-        altText: '-'
+        type:
+          'UNAVAILABLE',
+
+        label:
+          '불가',
+
+        detail:
+          '',
+
+        altText:
+          '-'
       };
     }
 
-    function getNormalizedAlternatives(row) {
+    function getNormalizedAlternatives(
+      row
+    ) {
       const source =
-        row && Array.isArray(row.alternatives)
+        row &&
+        Array.isArray(
+          row.alternatives
+        )
           ? row.alternatives
           : [];
 
       return source
-        .map(normalizeAlternativeTime)
-        .filter(Boolean);
+        .map(
+          normalizeAlternativeTime
+        )
+        .filter(
+          function(value) {
+            return isValidAlternativeTime(
+              value
+            );
+          }
+        );
     }
 
-    function normalizeAlternativeTime(value) {
+    function isValidAlternativeTime(
+      value
+    ) {
+      if (!value) {
+        return false;
+      }
+
+      const text =
+        String(value)
+          .trim();
+
+      if (!text) {
+        return false;
+      }
+
+      const compact =
+        text
+          .replace(/\s+/g, '')
+          .replace(/[，]/g, ',');
+
+      /*
+       * SWIM의 빈 대체 시간 표시 제외
+       */
+      const emptyValues = [
+        '-',
+        '--',
+        '---',
+        '—',
+        '―',
+        '－',
+        '-,-',
+        '--,--',
+        '—,—',
+        '―,―',
+        '－,－',
+        'null',
+        'undefined'
+      ];
+
+      if (
+        emptyValues.includes(
+          compact.toLowerCase()
+        )
+      ) {
+        return false;
+      }
+
+      /*
+       * 실제 시간 형식만 인정
+       *
+       * 12:30
+       * 익일 00:30
+       * 전일 23:50
+       */
+      return (
+        /^(익일\s*|전일\s*)?([01]\d|2[0-3]):[0-5]\d$/
+          .test(text)
+      );
+    }
+
+    function normalizeAlternativeTime(
+      value
+    ) {
       let text =
         String(
           value === null ||
@@ -1011,65 +1337,93 @@
         return '';
       }
 
-      text = text
-        .replaceAll('（', '(')
-        .replaceAll('）', ')');
+      text =
+        text
+          .replaceAll(
+            '（',
+            '('
+          )
+          .replaceAll(
+            '）',
+            ')'
+          );
 
-      text = text.replace(
-        /^\s*\(\s*後\s*\)\s*/i,
-        '익일 '
-      );
+      text =
+        text.replace(
+          /^\s*\(\s*後\s*\)\s*/i,
+          '익일 '
+        );
 
-      text = text.replace(
-        /^\s*\(\s*후\s*\)\s*/i,
-        '익일 '
-      );
+      text =
+        text.replace(
+          /^\s*\(\s*후\s*\)\s*/i,
+          '익일 '
+        );
 
-      text = text.replace(
-        /^\s*後\s*/i,
-        '익일 '
-      );
+      text =
+        text.replace(
+          /^\s*後\s*/i,
+          '익일 '
+        );
 
-      text = text.replace(
-        /^\s*\(\s*前\s*\)\s*/i,
-        '전일 '
-      );
+      text =
+        text.replace(
+          /^\s*\(\s*前\s*\)\s*/i,
+          '전일 '
+        );
 
-      text = text.replace(
-        /^\s*\(\s*전\s*\)\s*/i,
-        '전일 '
-      );
+      text =
+        text.replace(
+          /^\s*\(\s*전\s*\)\s*/i,
+          '전일 '
+        );
 
-      text = text.replace(
-        /^\s*前\s*/i,
-        '전일 '
-      );
+      text =
+        text.replace(
+          /^\s*前\s*/i,
+          '전일 '
+        );
 
-      text = text.replace(/\s+/g, ' ').trim();
+      text =
+        text.replace(
+          /\s+/g,
+          ' '
+        ).trim();
 
       return text;
     }
 
     async function testBackendConnection() {
       clearMessages();
-      setConnectionLoading(true);
+      setConnectionLoading(
+        true
+      );
 
       try {
         const response =
           await callBackend({
-            action: 'ping',
-            apiKey: FRONTEND_API_KEY
+            action:
+              'ping',
+
+            apiKey:
+              FRONTEND_API_KEY
           });
 
-        if (!response || response.success !== true) {
+        if (
+          !response ||
+          response.success !== true
+        ) {
           throw new Error(
-            response && response.message
+            response &&
+            response.message
               ? response.message
               : '연결 실패'
           );
         }
 
-        showConnectionResult('백엔드 연결 성공');
+        showConnectionResult(
+          '백엔드 연결 성공'
+        );
 
       } catch (error) {
         showError(
@@ -1079,38 +1433,56 @@
         );
 
       } finally {
-        setConnectionLoading(false);
+        setConnectionLoading(
+          false
+        );
       }
     }
 
-    async function callBackend(payload) {
+    async function callBackend(
+      payload
+    ) {
       validateBackendUrl();
 
       const controller =
         new AbortController();
 
-      const timeoutId = setTimeout(
-        function() {
-          controller.abort();
-        },
-        REQUEST_TIMEOUT_MS
-      );
+      const timeoutId =
+        setTimeout(
+          function() {
+            controller.abort();
+          },
+          REQUEST_TIMEOUT_MS
+        );
 
       try {
-        const response = await fetch(
-          BACKEND_URL,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type':
-                'text/plain;charset=UTF-8'
-            },
-            body: JSON.stringify(payload),
-            redirect: 'follow',
-            signal: controller.signal,
-            cache: 'no-store'
-          }
-        );
+        const response =
+          await fetch(
+            BACKEND_URL,
+            {
+              method:
+                'POST',
+
+              headers: {
+                'Content-Type':
+                  'text/plain;charset=UTF-8'
+              },
+
+              body:
+                JSON.stringify(
+                  payload
+                ),
+
+              redirect:
+                'follow',
+
+              signal:
+                controller.signal,
+
+              cache:
+                'no-store'
+            }
+          );
 
         if (!response.ok) {
           throw new Error(
@@ -1119,13 +1491,26 @@
           );
         }
 
-        const text = await response.text();
-        return JSON.parse(text);
+        const text =
+          await response.text();
+
+        try {
+          return JSON.parse(
+            text
+          );
+
+        } catch (error) {
+          throw new Error(
+            '백엔드 응답이 JSON 형식이 아닙니다.\n\n' +
+            text.substring(0, 500)
+          );
+        }
 
       } catch (error) {
         if (
           error &&
-          error.name === 'AbortError'
+          error.name ===
+            'AbortError'
         ) {
           throw new Error(
             '백엔드 응답 시간이 초과되었습니다.'
@@ -1135,166 +1520,304 @@
         throw error;
 
       } finally {
-        clearTimeout(timeoutId);
+        clearTimeout(
+          timeoutId
+        );
       }
     }
 
-    function validateBaseRequest(request) {
+    function validateBaseRequest(
+      request
+    ) {
       if (
-        request.mode !== 'arrival' &&
-        request.mode !== 'departure'
+        request.mode !==
+          'arrival' &&
+        request.mode !==
+          'departure'
       ) {
-        return '조회 기준을 선택하세요.';
+        return (
+          '조회 기준을 선택하세요.'
+        );
       }
 
-      if (!/^[A-Z]{4}$/.test(request.airport)) {
-        return '공항 ICAO 코드를 영문 4자리로 입력하세요.';
+      if (
+        !/^[A-Z]{4}$/.test(
+          request.airport
+        )
+      ) {
+        return (
+          '공항 ICAO 코드를 영문 4자리로 입력하세요.'
+        );
       }
 
-      if (!request.date) {
-        return '날짜를 입력하세요.';
+      if (
+        !request.date
+      ) {
+        return (
+          '날짜를 입력하세요.'
+        );
       }
 
       return '';
     }
 
-    function validateSingleRequest(request) {
+    function validateSingleRequest(
+      request
+    ) {
       const baseError =
-        validateBaseRequest(request);
+        validateBaseRequest(
+          request
+        );
 
       if (baseError) {
         return baseError;
       }
 
       if (!request.time) {
-        return '시간을 선택하세요.';
+        return (
+          '기준 시간을 HH:MM 형식으로 입력하세요.\n' +
+          '예: 12:05, 12:10, 23:55, 24:00'
+        );
+      }
+
+      if (
+        request.time !==
+          '24:00' &&
+        !/^([01]\d|2[0-3]):[0-5]\d$/
+          .test(
+            request.time
+          )
+      ) {
+        return (
+          '기준 시간을 올바르게 입력하세요.\n' +
+          '예: 12:05, 12:10, 23:55, 24:00'
+        );
       }
 
       return '';
     }
 
     function resetForm() {
-      document.getElementById('mode').value =
-        'arrival';
+      document
+        .getElementById('mode')
+        .value =
+          'arrival';
 
-      document.getElementById('airport').value =
-        '';
+      document
+        .getElementById('airport')
+        .value =
+          '';
 
       setDefaultDate();
+      setDefaultTime();
 
-      document.getElementById('time').value =
-        '12:00';
-
-      document.getElementById(
-        'singleResultInline'
-      ).className =
-        'inline-result empty';
-
-      document.getElementById(
-        'singleResultInline'
-      ).innerHTML =
-        '<div class="inline-result-main">-</div>';
+      resetSingleResult(
+        '-'
+      );
 
       clearMessages();
       hideFullDayPanel();
     }
 
-    function hideFullDayPanel() {
-      document.getElementById(
-        'resultPanel'
-      ).style.display = 'none';
+    function resetSingleResult(
+      message
+    ) {
+      const element =
+        document.getElementById(
+          'singleResultInline'
+        );
 
-      document.getElementById(
-        'fullDayTableBody'
-      ).innerHTML = '';
+      element.className =
+        'inline-result empty';
+
+      element.innerHTML = `
+        <div class="inline-result-main">
+          ${escapeHtml(message || '-')}
+        </div>
+      `;
     }
 
-    function setLoading(loading, message) {
+    function hideFullDayPanel() {
+      document
+        .getElementById(
+          'resultPanel'
+        )
+        .style.display =
+          'none';
+
+      document
+        .getElementById(
+          'fullDayTableBody'
+        )
+        .innerHTML =
+          '';
+    }
+
+    function setLoading(
+      loading,
+      message
+    ) {
       const loadingElement =
-        document.getElementById('loading');
+        document.getElementById(
+          'loading'
+        );
 
       loadingElement.style.display =
-        loading ? 'block' : 'none';
+        loading
+          ? 'block'
+          : 'none';
 
       loadingElement.textContent =
         loading
-          ? (message || '조회 중입니다.')
+          ? (
+              message ||
+              '조회 중입니다.'
+            )
           : '';
 
-      document.getElementById(
-        'fullDayButton'
-      ).disabled = loading;
+      document
+        .getElementById(
+          'fullDayButton'
+        )
+        .disabled =
+          loading;
 
-      document.getElementById(
-        'singleSearchButton'
-      ).disabled = loading;
+      document
+        .getElementById(
+          'singleSearchButton'
+        )
+        .disabled =
+          loading;
     }
 
-    function setConnectionLoading(loading) {
+    function setConnectionLoading(
+      loading
+    ) {
       const button =
         document.getElementById(
           'connectionButton'
         );
 
-      button.disabled = loading;
+      button.disabled =
+        loading;
+
       button.textContent =
-        loading ? '연결 중...' : '연결 확인';
+        loading
+          ? '연결 중...'
+          : '연결 확인';
     }
 
-    function showConnectionResult(message) {
+    function showConnectionResult(
+      message
+    ) {
       const element =
         document.getElementById(
           'connectionResult'
         );
 
-      element.textContent = message;
-      element.style.display = 'block';
+      element.textContent =
+        message;
+
+      element.style.display =
+        'block';
     }
 
-    function showError(message) {
+    function showError(
+      message
+    ) {
       const element =
-        document.getElementById('error');
+        document.getElementById(
+          'error'
+        );
 
-      element.textContent = message;
-      element.style.display = 'block';
+      element.textContent =
+        message;
+
+      element.style.display =
+        'block';
     }
 
     function clearMessages() {
-      document.getElementById('error').style.display =
-        'none';
+      document
+        .getElementById(
+          'error'
+        )
+        .style.display =
+          'none';
 
-      document.getElementById(
-        'connectionResult'
-      ).style.display = 'none';
+      document
+        .getElementById(
+          'connectionResult'
+        )
+        .style.display =
+          'none';
     }
 
     function validateBackendUrl() {
       if (
-        BACKEND_URL.includes(
-          '여기에_배포된_AppsScript_exec_URL'
+        !BACKEND_URL ||
+        !BACKEND_URL.includes(
+          'script.google.com/macros/s/'
+        ) ||
+        !BACKEND_URL.endsWith(
+          '/exec'
         )
       ) {
         throw new Error(
-          'BACKEND_URL에 실제 Apps Script /exec 주소를 입력하세요.'
+          'BACKEND_URL을 확인하세요.'
         );
       }
     }
 
-    function getValue(id) {
-      return document.getElementById(id).value.trim();
+    function getValue(
+      id
+    ) {
+      return document
+        .getElementById(id)
+        .value
+        .trim();
     }
 
-    function normalizeDate(value) {
-      return String(value).replace(/-/g, '/');
+    function normalizeDate(
+      value
+    ) {
+      return String(
+        value || ''
+      ).replace(
+        /-/g,
+        '/'
+      );
     }
 
-    function escapeHtml(value) {
-      return String(value)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
+    function escapeHtml(
+      value
+    ) {
+      return String(
+        value === null ||
+        value === undefined
+          ? ''
+          : value
+      )
+        .replaceAll(
+          '&',
+          '&amp;'
+        )
+        .replaceAll(
+          '<',
+          '&lt;'
+        )
+        .replaceAll(
+          '>',
+          '&gt;'
+        )
+        .replaceAll(
+          '"',
+          '&quot;'
+        )
+        .replaceAll(
+          "'",
+          '&#039;'
+        );
     }
   </script>
 </body>

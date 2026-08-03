@@ -17,23 +17,21 @@
       --border: #d8e0e9;
       --text: #172033;
       --muted: #667085;
+
       --primary: #1769e0;
       --primary-hover: #1058bd;
 
-      --available-bg: #e9f9f0;
+      --available-bg: #e5f8ed;
       --available-text: #087443;
+      --available-border: #9edbb8;
 
       --unavailable-bg: #fff0f0;
-      --unavailable-text: #b42318;
+      --unavailable-text: #c12424;
+      --unavailable-border: #efb0b0;
 
-      --alternative-bg: #fff7e4;
-      --alternative-text: #8b5b00;
-
-      --period-bg: #edf3ff;
-      --period-text: #344f9b;
-
-      --ignored-bg: #f2f4f7;
-      --ignored-text: #667085;
+      --alternative-bg: #fff6df;
+      --alternative-text: #936000;
+      --alternative-border: #e2b74e;
     }
 
     * {
@@ -51,31 +49,30 @@
     }
 
     .page {
-      width: min(1050px, 100%);
+      width: min(1100px, 100%);
       margin: 0 auto;
       padding: 24px 16px 50px;
     }
 
     .page-header {
-      margin-bottom: 17px;
+      margin-bottom: 18px;
     }
 
     .page-header h1 {
-      margin: 0 0 7px;
-      font-size: 27px;
+      margin: 0 0 8px;
+      font-size: 28px;
     }
 
     .page-header p {
       margin: 0;
       color: var(--muted);
       font-size: 14px;
-      line-height: 1.6;
     }
 
     .panel {
-      padding: 20px;
+      padding: 22px;
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 17px;
       background: var(--card);
       box-shadow:
         0 8px 28px
@@ -85,9 +82,10 @@
     .form-grid {
       display: grid;
       grid-template-columns:
-        minmax(170px, 0.8fr)
-        minmax(220px, 1fr)
-        minmax(220px, 1fr);
+        0.8fr
+        1fr
+        1fr
+        0.8fr;
       gap: 14px;
       align-items: end;
     }
@@ -103,8 +101,8 @@
     input,
     select {
       width: 100%;
-      height: 46px;
-      padding: 0 12px;
+      height: 48px;
+      padding: 0 13px;
       border: 1px solid #cfd7e1;
       border-radius: 9px;
       background: white;
@@ -156,57 +154,37 @@
     }
 
     .secondary-button {
-      min-width: 90px;
+      min-width: 92px;
       background: #edf1f5;
       color: #344054;
     }
 
     .loading {
       display: none;
-      margin-top: 17px;
-      padding: 17px;
-      border-radius: 10px;
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 11px;
       background: #edf4ff;
       color: #344f9b;
       text-align: center;
-      line-height: 1.6;
-    }
-
-    .spinner {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      margin-right: 8px;
-      border: 2px solid
-        rgba(52, 79, 155, 0.25);
-      border-top-color: #344f9b;
-      border-radius: 50%;
-      vertical-align: middle;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
     }
 
     .error {
       display: none;
-      margin-top: 17px;
+      margin-top: 18px;
       padding: 14px;
       border: 1px solid #efb4b4;
       border-radius: 10px;
       background: #fff0f0;
       color: #a51d1d;
       white-space: pre-wrap;
-      line-height: 1.55;
     }
 
     .connection-result {
       display: none;
-      margin-top: 17px;
-      padding: 13px;
+      margin-top: 18px;
+      padding: 14px;
+      border: 1px solid var(--available-border);
       border-radius: 10px;
       background: var(--available-bg);
       color: var(--available-text);
@@ -214,215 +192,131 @@
       font-weight: 700;
     }
 
-    .results {
+    .result-panel {
       display: none;
-      margin-top: 23px;
-    }
-
-    .result-heading {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: flex-end;
-      margin-bottom: 14px;
-    }
-
-    .result-heading h2 {
-      margin: 0;
-      font-size: 21px;
-    }
-
-    .checked-at {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns:
-        repeat(5, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .summary-card {
-      padding: 13px;
+      margin-top: 24px;
+      padding: 22px;
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 14px;
       background: #fafbfc;
     }
 
-    .summary-label {
-      color: var(--muted);
-      font-size: 12px;
+    .result-layout {
+      display: grid;
+      grid-template-columns:
+        minmax(250px, 1fr)
+        minmax(220px, 0.8fr);
+      gap: 18px;
+      align-items: stretch;
     }
 
-    .summary-number {
-      margin-top: 5px;
-      font-size: 22px;
+    .result-info {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+    }
+
+    .result-info-title {
+      margin-bottom: 15px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .result-time {
+      font-size: 30px;
       font-weight: 800;
     }
 
-    .filter-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 13px;
-    }
-
-    .filter-button {
-      height: 36px;
-      padding: 0 13px;
-      border: 1px solid var(--border);
-      background: white;
-      color: #475467;
-      font-size: 13px;
-    }
-
-    .filter-button.active {
-      border-color: var(--primary);
-      background: #edf4ff;
-      color: var(--primary);
-    }
-
-    .table-container {
-      max-height: 650px;
-      overflow: auto;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
+    .result-request {
+      margin-top: 8px;
+      color: var(--muted);
       font-size: 14px;
     }
 
-    thead {
-      position: sticky;
-      top: 0;
-      z-index: 4;
-      background: #f7f9fb;
-    }
-
-    th,
-    td {
-      padding: 11px 13px;
-      border-bottom: 1px solid #e8ecf1;
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    th {
-      color: #475467;
-      font-size: 12px;
-    }
-
-    tbody tr:hover {
-      background: #fafcff;
-    }
-
-    .time-cell {
-      font-size: 15px;
-      font-weight: 800;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      min-width: 108px;
+    .result-status {
+      display: flex;
+      min-height: 135px;
       justify-content: center;
       align-items: center;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      font-size: 27px;
       font-weight: 800;
+      text-align: center;
     }
 
     .status-AVAILABLE {
+      border-color: var(--available-border);
       background: var(--available-bg);
       color: var(--available-text);
     }
 
     .status-UNAVAILABLE {
+      border-color: var(--unavailable-border);
       background: var(--unavailable-bg);
       color: var(--unavailable-text);
     }
 
     .status-ALTERNATIVE {
+      border-color: var(--alternative-border);
       background: var(--alternative-bg);
       color: var(--alternative-text);
     }
 
-    .status-OUT_OF_PERIOD {
-      background: var(--period-bg);
-      color: var(--period-text);
+    .alternative-area {
+      display: none;
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid var(--alternative-border);
+      border-radius: 11px;
+      background: #fffaf0;
     }
 
-    .status-IGNORED,
-    .status-UNKNOWN {
-      background: var(--ignored-bg);
-      color: var(--ignored-text);
+    .alternative-title {
+      margin-bottom: 9px;
+      color: var(--alternative-text);
+      font-size: 13px;
+      font-weight: 700;
     }
 
     .alternative-chip {
       display: inline-block;
-      margin: 2px 5px 2px 0;
-      padding: 5px 9px;
-      border: 1px solid #dfc071;
+      margin: 3px 7px 3px 0;
+      padding: 7px 12px;
+      border: 1px solid var(--alternative-border);
       border-radius: 999px;
-      background: #fffaf0;
       color: #795000;
-      font-size: 12px;
       font-weight: 700;
     }
 
-    .empty-value {
-      color: #98a2b3;
-    }
-
-    .note {
-      margin-top: 12px;
+    .checked-at {
+      margin-top: 14px;
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.6;
+      text-align: right;
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 800px) {
       .form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .summary-grid {
         grid-template-columns:
           repeat(2, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 600px) {
+      .form-grid,
+      .result-layout,
+      .button-row {
+        grid-template-columns: 1fr;
+      }
+
       .page {
         padding: 12px 9px 35px;
       }
 
       .panel {
         padding: 14px;
-      }
-
-      .button-row {
-        grid-template-columns: 1fr;
-      }
-
-      .result-heading {
-        display: block;
-      }
-
-      .checked-at {
-        margin-top: 6px;
-      }
-
-      th,
-      td {
-        padding: 10px;
       }
     }
   </style>
@@ -437,7 +331,7 @@
 
       <p>
         일본 공항의 출발 또는 도착 슬롯을
-        0000L부터 2400L까지 30분 간격으로 확인합니다.
+        선택한 시간 기준으로 확인합니다.
       </p>
     </header>
 
@@ -449,12 +343,12 @@
           </label>
 
           <select id="mode">
-            <option value="departure">
-              출발
+            <option value="arrival" selected>
+              도착
             </option>
 
-            <option value="arrival">
-              도착
+            <option value="departure">
+              출발
             </option>
           </select>
         </div>
@@ -482,6 +376,14 @@
             type="date"
           >
         </div>
+
+        <div class="field">
+          <label for="time">
+            기준 시간
+          </label>
+
+          <select id="time"></select>
+        </div>
       </div>
 
       <div class="button-row">
@@ -491,7 +393,7 @@
           class="primary-button"
           onclick="runSearch()"
         >
-          하루 전체 슬롯 조회
+          선택 시간 슬롯 조회
         </button>
 
         <button
@@ -517,9 +419,7 @@
         id="loading"
         class="loading"
       >
-        <span class="spinner"></span>
-        49개 시간대의 슬롯을 확인하고 있습니다.<br>
-        잠시 기다려 주세요.
+        선택한 시간의 슬롯을 확인하고 있습니다.
       </div>
 
       <div
@@ -533,185 +433,78 @@
       ></div>
 
       <section
-        id="results"
-        class="results"
+        id="resultPanel"
+        class="result-panel"
       >
-        <div class="result-heading">
-          <h2>
-            조회 결과
-          </h2>
+        <div class="result-layout">
+          <div class="result-info">
+            <div class="result-info-title">
+              조회 조건
+            </div>
+
+            <div
+              id="resultTime"
+              class="result-time"
+            ></div>
+
+            <div
+              id="resultRequest"
+              class="result-request"
+            ></div>
+          </div>
 
           <div
-            id="checkedAt"
-            class="checked-at"
+            id="resultStatus"
+            class="result-status"
           ></div>
         </div>
 
-        <div class="summary-grid">
-          <div class="summary-card">
-            <div class="summary-label">
-              전체
-            </div>
-
-            <div
-              id="summaryTotal"
-              class="summary-number"
-            >
-              0
-            </div>
+        <div
+          id="alternativeArea"
+          class="alternative-area"
+        >
+          <div class="alternative-title">
+            대체 가능 시간
           </div>
 
-          <div class="summary-card">
-            <div class="summary-label">
-              사용 가능
-            </div>
-
-            <div
-              id="summaryAvailable"
-              class="summary-number"
-            >
-              0
-            </div>
-          </div>
-
-          <div class="summary-card">
-            <div class="summary-label">
-              사용 불가
-            </div>
-
-            <div
-              id="summaryUnavailable"
-              class="summary-number"
-            >
-              0
-            </div>
-          </div>
-
-          <div class="summary-card">
-            <div class="summary-label">
-              대체 시간 있음
-            </div>
-
-            <div
-              id="summaryAlternative"
-              class="summary-number"
-            >
-              0
-            </div>
-          </div>
-
-          <div class="summary-card">
-            <div class="summary-label">
-              기간 외
-            </div>
-
-            <div
-              id="summaryOutOfPeriod"
-              class="summary-number"
-            >
-              0
-            </div>
-          </div>
+          <div id="alternativeList"></div>
         </div>
 
-        <div class="filter-row">
-          <button
-            type="button"
-            class="filter-button active"
-            data-filter="ALL"
-            onclick="setFilter('ALL', this)"
-          >
-            전체
-          </button>
-
-          <button
-            type="button"
-            class="filter-button"
-            data-filter="AVAILABLE"
-            onclick="setFilter('AVAILABLE', this)"
-          >
-            가능
-          </button>
-
-          <button
-            type="button"
-            class="filter-button"
-            data-filter="UNAVAILABLE"
-            onclick="setFilter('UNAVAILABLE', this)"
-          >
-            불가
-          </button>
-
-          <button
-            type="button"
-            class="filter-button"
-            data-filter="ALTERNATIVE"
-            onclick="setFilter('ALTERNATIVE', this)"
-          >
-            대체 시간
-          </button>
-        </div>
-
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Local Time</th>
-                <th>결과</th>
-                <th>대체 가능 시간</th>
-                <th>API 요청 일시</th>
-              </tr>
-            </thead>
-
-            <tbody id="resultBody"></tbody>
-          </table>
-        </div>
-
-        <div class="note">
-          2400L은 다음 날짜 00:00으로 변환하여 조회합니다.
-          출발을 선택하면 출발 슬롯을 확인하고,
-          도착을 선택하면 도착 슬롯을 확인합니다.
-        </div>
+        <div
+          id="checkedAt"
+          class="checked-at"
+        ></div>
       </section>
     </section>
   </main>
 
   <script>
-    /*
-     * 반드시 실제 Apps Script 웹앱 URL로 교체
-     *
-     * 예:
-     * https://script.google.com/macros/s/AKfycbxxxxxxxx/exec
-     */
     const BACKEND_URL =
       'https://script.google.com/macros/s/AKfycbwgM3HlDeB6LO6A-AmESiG7KBGA9lsrloLxt0S70ix-QY7Z8WyungoG9rO19FGOQGN7MQ/exec';
 
     const FRONTEND_API_KEY =
       'slot-app-2026-MOMOBOMI';
 
-    /*
-     * 백엔드 응답 대기 제한
-     */
     const REQUEST_TIMEOUT_MS =
-      120000;
-
-    let allRows = [];
-    let activeFilter = 'ALL';
+      60000;
 
     initialize();
 
     function initialize() {
       setDefaultDate();
+      createTimeOptions();
       bindAirportInput();
     }
 
     function setDefaultDate() {
-      const now = new Date();
+      const now =
+        new Date();
 
-      const localDate = new Date(
-        now.getTime() -
-        now.getTimezoneOffset() * 60000
-      );
+      const localDate =
+        new Date(
+          now.getTime() -
+          now.getTimezoneOffset() * 60000
+        );
 
       document
         .getElementById('date')
@@ -721,16 +514,73 @@
             .substring(0, 10);
     }
 
+    function createTimeOptions() {
+      const select =
+        document.getElementById(
+          'time'
+        );
+
+      let html = '';
+
+      for (
+        let index = 0;
+        index <= 48;
+        index++
+      ) {
+        const totalMinutes =
+          index * 30;
+
+        const hour =
+          Math.floor(
+            totalMinutes / 60
+          );
+
+        const minute =
+          totalMinutes % 60;
+
+        const value =
+          index === 48
+            ? '24:00'
+            : String(hour)
+                .padStart(2, '0') +
+              ':' +
+              String(minute)
+                .padStart(2, '0');
+
+        const label =
+          index === 48
+            ? '2400L'
+            : value.replace(':', '') +
+              'L';
+
+        html += `
+          <option value="${value}">
+            ${label}
+          </option>
+        `;
+      }
+
+      select.innerHTML =
+        html;
+
+      /*
+       * 기본 선택 시간 12:00
+       */
+      select.value =
+        '12:00';
+    }
+
     function bindAirportInput() {
       document
         .getElementById('airport')
         .addEventListener(
           'input',
           function() {
-            this.value = this.value
-              .toUpperCase()
-              .replace(/[^A-Z]/g, '')
-              .substring(0, 4);
+            this.value =
+              this.value
+                .toUpperCase()
+                .replace(/[^A-Z]/g, '')
+                .substring(0, 4);
           }
         );
     }
@@ -749,28 +599,39 @@
         date:
           normalizeDate(
             getValue('date')
-          )
+          ),
+
+        time:
+          getValue('time')
       };
 
       const validationError =
-        validateRequest(request);
+        validateRequest(
+          request
+        );
 
       if (validationError) {
-        showError(validationError);
+        showError(
+          validationError
+        );
+
         return;
       }
 
       document
-        .getElementById('results')
-        .style.display = 'none';
+        .getElementById(
+          'resultPanel'
+        )
+        .style.display =
+          'none';
 
       setLoading(true);
 
       try {
-        const result =
+        const response =
           await callBackend({
             action:
-              'checkFullDaySlots',
+              'checkSingleSlot',
 
             apiKey:
               FRONTEND_API_KEY,
@@ -779,163 +640,25 @@
               request
           });
 
-        handleSuccess(result);
+        renderResult(
+          response
+        );
 
       } catch (error) {
-        handleFailure(error);
+        showError(
+          error && error.message
+            ? error.message
+            : String(error)
+        );
 
       } finally {
         setLoading(false);
       }
     }
 
-    async function testBackendConnection() {
-      clearMessages();
-      setConnectionLoading(true);
-
-      try {
-        const result =
-          await callBackend({
-            action: 'ping',
-            apiKey: FRONTEND_API_KEY
-          });
-
-        if (
-          !result ||
-          result.success !== true
-        ) {
-          throw new Error(
-            result && result.message
-              ? result.message
-              : '백엔드 연결에 실패했습니다.'
-          );
-        }
-
-        const message =
-          result.timestamp
-            ? `백엔드 연결 성공 · ${result.timestamp}`
-            : '백엔드 연결 성공';
-
-        showConnectionResult(message);
-
-      } catch (error) {
-        showError(
-          '백엔드 연결 실패\n' +
-          (
-            error && error.message
-              ? error.message
-              : String(error)
-          )
-        );
-
-      } finally {
-        setConnectionLoading(false);
-      }
-    }
-
-    async function callBackend(payload) {
-      validateBackendUrl();
-
-      const controller =
-        new AbortController();
-
-      const timeoutId =
-        setTimeout(
-          function() {
-            controller.abort();
-          },
-          REQUEST_TIMEOUT_MS
-        );
-
-      try {
-        /*
-         * text/plain 사용:
-         * OPTIONS preflight 요청을 피하기 위한 방식
-         */
-        const response =
-          await fetch(
-            BACKEND_URL,
-            {
-              method: 'POST',
-
-              headers: {
-                'Content-Type':
-                  'text/plain;charset=UTF-8'
-              },
-
-              body:
-                JSON.stringify(payload),
-
-              redirect:
-                'follow',
-
-              signal:
-                controller.signal,
-
-              cache:
-                'no-store'
-            }
-          );
-
-        if (!response.ok) {
-          throw new Error(
-            `백엔드 HTTP 오류: ${response.status}`
-          );
-        }
-
-        const responseText =
-          await response.text();
-
-        if (!responseText) {
-          throw new Error(
-            '백엔드 응답이 비어 있습니다.'
-          );
-        }
-
-        try {
-          return JSON.parse(
-            responseText
-          );
-
-        } catch (error) {
-          throw new Error(
-            '백엔드 응답이 JSON 형식이 아닙니다.\n' +
-            responseText.substring(0, 500)
-          );
-        }
-
-      } catch (error) {
-        if (
-          error &&
-          error.name === 'AbortError'
-        ) {
-          throw new Error(
-            '백엔드 응답 시간이 초과되었습니다.'
-          );
-        }
-
-        throw error;
-
-      } finally {
-        clearTimeout(timeoutId);
-      }
-    }
-
-    function validateBackendUrl() {
-      if (
-        !BACKEND_URL ||
-        BACKEND_URL.includes(
-          '여기에_배포_ID'
-        ) ||
-        !BACKEND_URL.endsWith('/exec')
-      ) {
-        throw new Error(
-          '프론트 코드의 BACKEND_URL에 실제 Apps Script /exec 주소를 입력하세요.'
-        );
-      }
-    }
-
-    function handleSuccess(response) {
+    function renderResult(
+      response
+    ) {
       if (
         !response ||
         response.success !== true
@@ -950,256 +673,311 @@
         return;
       }
 
-      allRows =
-        Array.isArray(response.rows)
-          ? response.rows
-          : [];
+      const row =
+        response.result || {};
 
-      activeFilter = 'ALL';
-
-      renderSummary(
-        response.summary || {}
-      );
-
-      updateFilterButtons();
-      renderRows();
-
-      const elapsedText =
-        response.elapsedSeconds !==
-        undefined
-          ? ` · 소요시간: ${response.elapsedSeconds}초`
-          : '';
-
-      document
-        .getElementById('checkedAt')
-        .textContent =
-          `조회 시각: ${response.checkedAt || '-'}` +
-          elapsedText;
-
-      document
-        .getElementById('results')
-        .style.display = 'block';
-    }
-
-    function handleFailure(error) {
-      showError(
-        error && error.message
-          ? error.message
-          : String(error)
-      );
-    }
-
-    function renderSummary(summary) {
-      setText(
-        'summaryTotal',
-        summary.total || 0
-      );
-
-      setText(
-        'summaryAvailable',
-        summary.available || 0
-      );
-
-      setText(
-        'summaryUnavailable',
-        summary.unavailable || 0
-      );
-
-      setText(
-        'summaryAlternative',
-        summary.alternative || 0
-      );
-
-      setText(
-        'summaryOutOfPeriod',
-        summary.outOfPeriod || 0
-      );
-    }
-
-    function renderRows() {
-      const body =
-        document.getElementById(
-          'resultBody'
-        );
-
-      const rows =
-        allRows.filter(function(row) {
-          if (activeFilter === 'ALL') {
-            return true;
-          }
-
-          if (
-            activeFilter ===
-            'UNAVAILABLE'
-          ) {
-            return (
-              row.status ===
-                'UNAVAILABLE' ||
-              row.status ===
-                'OUT_OF_PERIOD' ||
-              row.status ===
-                'UNKNOWN'
-            );
-          }
-
-          return (
-            row.status ===
-            activeFilter
-          );
-        });
-
-      if (rows.length === 0) {
-        body.innerHTML = `
-          <tr>
-            <td colspan="4">
-              표시할 결과가 없습니다.
-            </td>
-          </tr>
-        `;
-
-        return;
-      }
-
-      body.innerHTML =
-        rows
-          .map(createRowHtml)
-          .join('');
-    }
-
-    function createRowHtml(row) {
       const alternatives =
         Array.isArray(
           row.alternatives
         )
           ? row.alternatives
+              .map(
+                normalizeAlternativeTime
+              )
+              .filter(Boolean)
           : [];
 
-      const alternativeHtml =
+      let status;
+
+      if (
         alternatives.length > 0
-          ? alternatives
-              .map(function(time) {
+      ) {
+        status =
+          'ALTERNATIVE';
+
+      } else if (
+        row.status ===
+        'AVAILABLE'
+      ) {
+        status =
+          'AVAILABLE';
+
+      } else {
+        status =
+          'UNAVAILABLE';
+      }
+
+      document
+        .getElementById(
+          'resultTime'
+        )
+        .textContent =
+          row.displayTime || '-';
+
+      document
+        .getElementById(
+          'resultRequest'
+        )
+        .textContent =
+          row.requestDate +
+          ' ' +
+          row.requestTime;
+
+      const statusElement =
+        document.getElementById(
+          'resultStatus'
+        );
+
+      statusElement.className =
+        'result-status status-' +
+        status;
+
+      statusElement.textContent =
+        getStatusLabel(
+          status
+        );
+
+      const alternativeArea =
+        document.getElementById(
+          'alternativeArea'
+        );
+
+      const alternativeList =
+        document.getElementById(
+          'alternativeList'
+        );
+
+      if (
+        alternatives.length > 0
+      ) {
+        alternativeList.innerHTML =
+          alternatives
+            .map(
+              function(time) {
                 return `
-                  <span
-                    class="alternative-chip"
-                  >
+                  <span class="alternative-chip">
                     ${escapeHtml(time)}
                   </span>
                 `;
-              })
-              .join('')
-          : `
-              <span class="empty-value">
-                -
-              </span>
-            `;
+              }
+            )
+            .join('');
 
-      return `
-        <tr>
-          <td class="time-cell">
-            ${escapeHtml(
-              row.displayTime
-            )}
-          </td>
+        alternativeArea.style.display =
+          'block';
 
-          <td>
-            <span
-              class="
-                status-badge
-                status-${escapeHtml(
-                  row.status
-                )}
-              "
-            >
-              ${escapeHtml(
-                getStatusLabel(
-                  row.status
-                )
-              )}
-            </span>
-          </td>
+      } else {
+        alternativeList.innerHTML =
+          '';
 
-          <td>
-            ${alternativeHtml}
-          </td>
+        alternativeArea.style.display =
+          'none';
+      }
 
-          <td>
-            ${escapeHtml(
-              row.requestDate
-            )}
-            ${escapeHtml(
-              row.requestTime
-            )}
-          </td>
-        </tr>
-      `;
-    }
+      const elapsed =
+        response.elapsedSeconds !==
+        undefined
+          ? ' · 소요시간: ' +
+            response.elapsedSeconds +
+            '초'
+          : '';
 
-    function getStatusLabel(status) {
-      const labels = {
-        AVAILABLE:
-          '✅ 사용 가능',
-
-        UNAVAILABLE:
-          '❌ 사용 불가',
-
-        ALTERNATIVE:
-          '🔄 대체 시간',
-
-        OUT_OF_PERIOD:
-          '⏰ 기간 외',
-
-        IGNORED:
-          '➖ 확인 제외',
-
-        UNKNOWN:
-          '⚠️ 결과 없음'
-      };
-
-      return (
-        labels[status] ||
-        status ||
-        '알 수 없음'
-      );
-    }
-
-    function setFilter(
-      filter,
-      selectedButton
-    ) {
-      activeFilter = filter;
-
-      updateFilterButtons(
-        selectedButton
-      );
-
-      renderRows();
-    }
-
-    function updateFilterButtons(
-      selectedButton
-    ) {
       document
-        .querySelectorAll(
-          '.filter-button'
+        .getElementById(
+          'checkedAt'
         )
-        .forEach(function(button) {
-          const active =
-            selectedButton
-              ? button === selectedButton
-              : button.dataset.filter ===
-                activeFilter;
+        .textContent =
+          '조회 시각: ' +
+          (
+            response.checkedAt ||
+            '-'
+          ) +
+          elapsed;
 
-          button.classList.toggle(
-            'active',
-            active
-          );
-        });
+      document
+        .getElementById(
+          'resultPanel'
+        )
+        .style.display =
+          'block';
     }
 
-    function validateRequest(request) {
+    function getStatusLabel(
+      status
+    ) {
       if (
-        request.mode !== 'departure' &&
-        request.mode !== 'arrival'
+        status === 'AVAILABLE'
+      ) {
+        return '✅ 가능';
+      }
+
+      if (
+        status === 'ALTERNATIVE'
+      ) {
+        return '🔄 대체 시간';
+      }
+
+      return '❌ 불가';
+    }
+
+    function normalizeAlternativeTime(
+      value
+    ) {
+      let text =
+        String(
+          value || ''
+        ).trim();
+
+      text =
+        text
+          .replaceAll(
+            '（',
+            '('
+          )
+          .replaceAll(
+            '）',
+            ')'
+          );
+
+      text =
+        text.replace(
+          /^\s*\(\s*後\s*\)\s*/,
+          '익일 '
+        );
+
+      text =
+        text.replace(
+          /^\s*\(\s*前\s*\)\s*/,
+          '전일 '
+        );
+
+      return text.trim();
+    }
+
+    async function testBackendConnection() {
+      clearMessages();
+      setConnectionLoading(true);
+
+      try {
+        const response =
+          await callBackend({
+            action: 'ping',
+            apiKey: FRONTEND_API_KEY
+          });
+
+        if (
+          !response ||
+          response.success !== true
+        ) {
+          throw new Error(
+            response &&
+            response.message
+              ? response.message
+              : '연결 실패'
+          );
+        }
+
+        showConnectionResult(
+          '백엔드 연결 성공'
+        );
+
+      } catch (error) {
+        showError(
+          error && error.message
+            ? error.message
+            : String(error)
+        );
+
+      } finally {
+        setConnectionLoading(false);
+      }
+    }
+
+    async function callBackend(
+      payload
+    ) {
+      validateBackendUrl();
+
+      const controller =
+        new AbortController();
+
+      const timeoutId =
+        setTimeout(
+          function() {
+            controller.abort();
+          },
+          REQUEST_TIMEOUT_MS
+        );
+
+      try {
+        const response =
+          await fetch(
+            BACKEND_URL,
+            {
+              method: 'POST',
+
+              headers: {
+                'Content-Type':
+                  'text/plain;charset=UTF-8'
+              },
+
+              body:
+                JSON.stringify(
+                  payload
+                ),
+
+              redirect:
+                'follow',
+
+              signal:
+                controller.signal,
+
+              cache:
+                'no-store'
+            }
+          );
+
+        if (!response.ok) {
+          throw new Error(
+            '백엔드 HTTP 오류: ' +
+            response.status
+          );
+        }
+
+        const text =
+          await response.text();
+
+        return JSON.parse(
+          text
+        );
+
+      } catch (error) {
+        if (
+          error &&
+          error.name === 'AbortError'
+        ) {
+          throw new Error(
+            '백엔드 응답 시간이 초과되었습니다.'
+          );
+        }
+
+        throw error;
+
+      } finally {
+        clearTimeout(
+          timeoutId
+        );
+      }
+    }
+
+    function validateRequest(
+      request
+    ) {
+      if (
+        request.mode !==
+          'arrival' &&
+        request.mode !==
+          'departure'
       ) {
         return '조회 기준을 선택하세요.';
       }
@@ -1210,16 +988,20 @@
         )
       ) {
         return (
-          '공항 ICAO 코드를 4자리로 입력하세요.'
+          '공항 ICAO 코드를 영문 4자리로 입력하세요.'
         );
       }
 
       if (
-        !/^\d{4}\/\d{2}\/\d{2}$/.test(
-          request.date
-        )
+        !request.date
       ) {
-        return '조회 날짜를 입력하세요.';
+        return '날짜를 입력하세요.';
+      }
+
+      if (
+        !request.time
+      ) {
+        return '시간을 선택하세요.';
       }
 
       return '';
@@ -1228,29 +1010,38 @@
     function resetForm() {
       document
         .getElementById('mode')
-        .value = 'departure';
+        .value =
+          'arrival';
 
       document
         .getElementById('airport')
-        .value = '';
+        .value =
+          '';
 
       setDefaultDate();
 
-      allRows = [];
-      activeFilter = 'ALL';
+      document
+        .getElementById('time')
+        .value =
+          '12:00';
 
       clearMessages();
 
       document
-        .getElementById('results')
-        .style.display = 'none';
-
-      updateFilterButtons();
+        .getElementById(
+          'resultPanel'
+        )
+        .style.display =
+          'none';
     }
 
-    function setLoading(loading) {
+    function setLoading(
+      loading
+    ) {
       document
-        .getElementById('loading')
+        .getElementById(
+          'loading'
+        )
         .style.display =
           loading
             ? 'block'
@@ -1260,19 +1051,8 @@
         .getElementById(
           'searchButton'
         )
-        .disabled = loading;
-
-      document
-        .getElementById(
-          'connectionButton'
-        )
-        .disabled = loading;
-
-      document
-        .getElementById(
-          'resetButton'
-        )
-        .disabled = loading;
+        .disabled =
+          loading;
     }
 
     function setConnectionLoading(
@@ -1283,7 +1063,8 @@
           'connectionButton'
         );
 
-      button.disabled = loading;
+      button.disabled =
+        loading;
 
       button.textContent =
         loading
@@ -1299,40 +1080,52 @@
           'connectionResult'
         );
 
-      element.textContent = message;
-      element.style.display = 'block';
+      element.textContent =
+        message;
+
+      element.style.display =
+        'block';
     }
 
-    function showError(message) {
+    function showError(
+      message
+    ) {
       const element =
         document.getElementById(
           'error'
         );
 
-      element.textContent = message;
-      element.style.display = 'block';
+      element.textContent =
+        message;
+
+      element.style.display =
+        'block';
     }
 
     function clearMessages() {
-      const errorElement =
-        document.getElementById(
-          'error'
-        );
+      document
+        .getElementById('error')
+        .style.display =
+          'none';
 
-      const connectionElement =
-        document.getElementById(
+      document
+        .getElementById(
           'connectionResult'
+        )
+        .style.display =
+          'none';
+    }
+
+    function validateBackendUrl() {
+      if (
+        BACKEND_URL.includes(
+          '여기에_배포_ID'
+        )
+      ) {
+        throw new Error(
+          'BACKEND_URL에 실제 /exec 주소를 입력하세요.'
         );
-
-      errorElement.textContent = '';
-      errorElement.style.display =
-        'none';
-
-      connectionElement.textContent =
-        '';
-
-      connectionElement.style.display =
-        'none';
+      }
     }
 
     function getValue(id) {
@@ -1342,30 +1135,40 @@
         .trim();
     }
 
-    function normalizeDate(value) {
+    function normalizeDate(
+      value
+    ) {
       return String(value)
-        .replace(/-/g, '/');
+        .replace(
+          /-/g,
+          '/'
+        );
     }
 
-    function setText(id, value) {
-      document
-        .getElementById(id)
-        .textContent =
-          String(value);
-    }
-
-    function escapeHtml(value) {
-      return String(
-        value === null ||
-        value === undefined
-          ? ''
-          : value
-      )
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
+    function escapeHtml(
+      value
+    ) {
+      return String(value)
+        .replaceAll(
+          '&',
+          '&amp;'
+        )
+        .replaceAll(
+          '<',
+          '&lt;'
+        )
+        .replaceAll(
+          '>',
+          '&gt;'
+        )
+        .replaceAll(
+          '"',
+          '&quot;'
+        )
+        .replaceAll(
+          "'",
+          '&#039;'
+        );
     }
   </script>
 </body>

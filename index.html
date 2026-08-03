@@ -5,7 +5,7 @@
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
   >
 
   <title>Japan Slot Checker</title>
@@ -328,6 +328,26 @@
       font-weight: 800;
     }
 
+    .result-title-inline {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .cache-title-badge {
+      display: none;
+      padding: 3px 7px;
+      border: 1px solid #c9cfd8;
+      border-radius: 999px;
+      background: #eef0f3;
+      color: #667085;
+      font-size: 10px;
+      font-weight: 800;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
     .result-subtitle {
       margin-top: 5px;
       color: var(--muted);
@@ -410,6 +430,32 @@
       text-align: right;
     }
 
+    .query-source-badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 3px 7px;
+      border: 1px solid #cfd7e1;
+      border-radius: 999px;
+      background: #f4f6f8;
+      color: #475467;
+      font-size: 11px;
+      font-weight: 800;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .query-source-badge.cache {
+      border-color: #b7c9e2;
+      background: #edf4ff;
+      color: #245a9f;
+    }
+
+    .query-source-badge.live {
+      border-color: #a9d8bd;
+      background: #eaf8ef;
+      color: #087443;
+    }
+
     @media (max-width: 1000px) {
       .action-section {
         grid-template-columns: 1fr;
@@ -424,6 +470,11 @@
     }
 
     @media (max-width: 760px) {
+      input,
+      select {
+        font-size: 16px;
+      }
+
       .form-grid {
         grid-template-columns:
           minmax(0, 0.85fr)
@@ -616,8 +667,17 @@
       >
         <div class="result-title-row">
           <div>
-            <div class="result-title">
-              전체 Slot 조회 결과
+            <div class="result-title-inline">
+              <div class="result-title">
+                전체 Slot 조회 결과
+              </div>
+
+              <span
+                id="fullDayCacheBadge"
+                class="cache-title-badge"
+              >
+                Cache
+              </span>
             </div>
 
             <div
@@ -1044,6 +1104,19 @@
           row
         );
 
+      const sourceInfo =
+        getQuerySourceInfo(
+          response
+        );
+
+      const detailParts = [];
+
+      if (info.detail) {
+        detailParts.push(
+          info.detail
+        );
+      }
+
       const element =
         document.getElementById(
           'singleResultInline'
@@ -1056,13 +1129,18 @@
       element.innerHTML = `
         <div class="inline-result-main">
           ${escapeHtml(info.label)}
+          <span
+            class="query-source-badge ${sourceInfo.className}"
+          >
+            ${escapeHtml(sourceInfo.label)}
+          </span>
         </div>
 
         ${
-          info.detail
+          detailParts.length > 0
             ? `
               <div class="inline-result-sub">
-                ${escapeHtml(info.detail)}
+                ${escapeHtml(detailParts.join(' · '))}
               </div>
             `
             : ''
@@ -1185,6 +1263,16 @@
             '초'
           : '';
 
+      const cacheBadge =
+        document.getElementById(
+          'fullDayCacheBadge'
+        );
+
+      cacheBadge.style.display =
+        response.cacheHit === true
+          ? 'inline-block'
+          : 'none';
+
       document
         .getElementById(
           'checkedAt'
@@ -1204,6 +1292,36 @@
         .style.display =
           'block';
     }
+
+    function getQuerySourceInfo(
+      response
+    ) {
+      if (
+        response &&
+        response.cacheHit === true
+      ) {
+        if (
+          response.cacheSource ===
+          'CACHE_AFTER_LOCK'
+        ) {
+          return {
+            label: '캐시 · 대기 후',
+            className: 'cache'
+          };
+        }
+
+        return {
+          label: '캐시',
+          className: 'cache'
+        };
+      }
+
+      return {
+        label: '실시간',
+        className: 'live'
+      };
+    }
+
 
     function resolveStatusInfo(
       row

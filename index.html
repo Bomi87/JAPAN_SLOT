@@ -10,7 +10,7 @@
     content="width=device-width, initial-scale=1"
   >
 
-  <title>MLIT Slot Availability</title>
+  <title>Japan Slot Availability</title>
 
   <style>
     :root {
@@ -53,7 +53,7 @@
     }
 
     .page {
-      width: min(1120px, 100%);
+      width: min(1050px, 100%);
       margin: 0 auto;
       padding: 24px 16px 50px;
     }
@@ -87,8 +87,10 @@
     .form-grid {
       display: grid;
       grid-template-columns:
-        1fr 1fr 1fr 1fr 1fr;
-      gap: 12px;
+        minmax(170px, 0.8fr)
+        minmax(220px, 1fr)
+        minmax(220px, 1fr);
+      gap: 14px;
       align-items: end;
     }
 
@@ -103,8 +105,8 @@
     input,
     select {
       width: 100%;
-      height: 44px;
-      padding: 0 11px;
+      height: 46px;
+      padding: 0 12px;
       border: 1px solid #cfd7e1;
       border-radius: 9px;
       background: white;
@@ -118,18 +120,17 @@
         3px solid
         rgba(23, 105, 224, 0.14);
 
-      border-color:
-        var(--primary);
+      border-color: var(--primary);
     }
 
     .button-row {
       display: flex;
       gap: 10px;
-      margin-top: 17px;
+      margin-top: 18px;
     }
 
     button {
-      height: 46px;
+      height: 48px;
       padding: 0 19px;
       border: 0;
       border-radius: 9px;
@@ -150,11 +151,11 @@
     }
 
     .primary-button:hover {
-      background:
-        var(--primary-hover);
+      background: var(--primary-hover);
     }
 
     .secondary-button {
+      min-width: 90px;
       background: #edf1f5;
       color: #344054;
     }
@@ -162,12 +163,12 @@
     .loading {
       display: none;
       margin-top: 17px;
-      padding: 14px;
+      padding: 17px;
       border-radius: 10px;
       background: #edf4ff;
       color: #344f9b;
       text-align: center;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     .error {
@@ -241,17 +242,14 @@
     .filter-button {
       height: 36px;
       padding: 0 13px;
-      border:
-        1px solid
-        var(--border);
+      border: 1px solid var(--border);
       background: white;
       color: #475467;
       font-size: 13px;
     }
 
     .filter-button.active {
-      border-color:
-        var(--primary);
+      border-color: var(--primary);
       background: #edf4ff;
       color: var(--primary);
     }
@@ -259,9 +257,7 @@
     .table-container {
       max-height: 650px;
       overflow: auto;
-      border:
-        1px solid
-        var(--border);
+      border: 1px solid var(--border);
       border-radius: 12px;
     }
 
@@ -282,9 +278,7 @@
     th,
     td {
       padding: 11px 13px;
-      border-bottom:
-        1px solid
-        #e8ecf1;
+      border-bottom: 1px solid #e8ecf1;
       text-align: left;
       white-space: nowrap;
     }
@@ -305,7 +299,7 @@
 
     .status-badge {
       display: inline-flex;
-      min-width: 96px;
+      min-width: 108px;
       justify-content: center;
       align-items: center;
       padding: 6px 10px;
@@ -315,39 +309,29 @@
     }
 
     .status-AVAILABLE {
-      background:
-        var(--available-background);
-      color:
-        var(--available-text);
+      background: var(--available-background);
+      color: var(--available-text);
     }
 
     .status-UNAVAILABLE {
-      background:
-        var(--unavailable-background);
-      color:
-        var(--unavailable-text);
+      background: var(--unavailable-background);
+      color: var(--unavailable-text);
     }
 
     .status-ALTERNATIVE {
-      background:
-        var(--alternative-background);
-      color:
-        var(--alternative-text);
+      background: var(--alternative-background);
+      color: var(--alternative-text);
     }
 
     .status-OUT_OF_PERIOD {
-      background:
-        var(--period-background);
-      color:
-        var(--period-text);
+      background: var(--period-background);
+      color: var(--period-text);
     }
 
     .status-IGNORED,
     .status-UNKNOWN {
-      background:
-        var(--ignored-background);
-      color:
-        var(--ignored-text);
+      background: var(--ignored-background);
+      color: var(--ignored-text);
     }
 
     .alternative-chip {
@@ -373,10 +357,9 @@
       line-height: 1.6;
     }
 
-    @media (max-width: 850px) {
+    @media (max-width: 760px) {
       .form-grid {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
+        grid-template-columns: 1fr;
       }
 
       .summary-grid {
@@ -387,15 +370,15 @@
 
     @media (max-width: 520px) {
       .page {
-        padding:
-          12px 9px 35px;
+        padding: 12px 9px 35px;
       }
 
       .panel {
         padding: 14px;
       }
 
-      .form-grid {
+      .button-row {
+        display: grid;
         grid-template-columns: 1fr;
       }
 
@@ -418,13 +401,11 @@
 <body>
   <main class="page">
     <header class="page-header">
-      <h1>
-        MLIT Slot Availability
-      </h1>
+      <h1>Japan Slot Availability</h1>
 
       <p>
-        선택한 날짜의 슬롯을 0000L부터
-        2400L까지 30분 간격으로 확인합니다.
+        일본 공항의 출발 또는 도착 슬롯을
+        0000L부터 2400L까지 30분 간격으로 확인합니다.
       </p>
     </header>
 
@@ -437,37 +418,24 @@
 
           <select id="mode">
             <option value="departure">
-              출발 슬롯 기준
+              출발
             </option>
 
             <option value="arrival">
-              도착 슬롯 기준
+              도착
             </option>
           </select>
         </div>
 
         <div class="field">
-          <label for="departureAirport">
-            출발 공항 ICAO
+          <label for="airport">
+            공항 ICAO
           </label>
 
           <input
-            id="departureAirport"
+            id="airport"
             maxlength="4"
-            placeholder="RKSS"
-            autocomplete="off"
-          >
-        </div>
-
-        <div class="field">
-          <label for="arrivalAirport">
-            도착 공항 ICAO
-          </label>
-
-          <input
-            id="arrivalAirport"
-            maxlength="4"
-            placeholder="RJTT"
+            placeholder="예: RJTT"
             autocomplete="off"
           >
         </div>
@@ -480,21 +448,6 @@
           <input
             id="date"
             type="date"
-          >
-        </div>
-
-        <div class="field">
-          <label for="duration">
-            비행시간(분)
-          </label>
-
-          <input
-            id="duration"
-            type="number"
-            min="0"
-            max="1440"
-            step="5"
-            value="120"
           >
         </div>
       </div>
@@ -661,8 +614,8 @@
 
         <div class="note">
           2400L은 다음 날짜 00:00으로 변환하여 조회합니다.
-          출발 기준에서는 선택한 시간이 출발시각이며,
-          도착 기준에서는 선택한 시간이 도착시각입니다.
+          조회 기준에서 출발을 선택하면 출발 슬롯,
+          도착을 선택하면 도착 슬롯 결과를 표시합니다.
         </div>
       </section>
     </section>
@@ -676,49 +629,37 @@
 
     function initialize() {
       setDefaultDate();
-      bindAirportInputs();
+      bindAirportInput();
     }
 
     function setDefaultDate() {
-      const now =
-        new Date();
+      const now = new Date();
 
-      const local =
-        new Date(
-          now.getTime() -
-          now.getTimezoneOffset() *
-          60000
-        );
+      const localDate = new Date(
+        now.getTime() -
+        now.getTimezoneOffset() * 60000
+      );
 
       document
         .getElementById('date')
         .value =
-          local
+          localDate
             .toISOString()
             .substring(0, 10);
     }
 
-    function bindAirportInputs() {
-      [
-        'departureAirport',
-        'arrivalAirport'
-      ].forEach(function(id) {
-        document
-          .getElementById(id)
-          .addEventListener(
-            'input',
-            function() {
-              this.value =
-                this.value
-                  .toUpperCase()
-                  .replace(
-                    /[^A-Z]/g,
-                    ''
-                  )
-                  .substring(0, 4);
-            }
-          );
-      });
+    function bindAirportInput() {
+      document
+        .getElementById('airport')
+        .addEventListener(
+          'input',
+          function() {
+            this.value = this.value
+              .toUpperCase()
+              .replace(/[^A-Z]/g, '')
+              .substring(0, 4);
+          }
+        );
     }
 
     function runSearch() {
@@ -728,24 +669,13 @@
         mode:
           getValue('mode'),
 
-        departureAirport:
-          getValue(
-            'departureAirport'
-          ).toUpperCase(),
-
-        arrivalAirport:
-          getValue(
-            'arrivalAirport'
-          ).toUpperCase(),
+        airport:
+          getValue('airport')
+            .toUpperCase(),
 
         date:
           normalizeDate(
             getValue('date')
-          ),
-
-        flightDurationMinutes:
-          Number(
-            getValue('duration')
           )
       };
 
@@ -756,6 +686,10 @@
         showError(validationError);
         return;
       }
+
+      document
+        .getElementById('results')
+        .style.display = 'none';
 
       setLoading(true);
 
@@ -807,8 +741,7 @@
 
       document
         .getElementById('results')
-        .style.display =
-          'block';
+        .style.display = 'block';
     }
 
     function handleFailure(error) {
@@ -1030,22 +963,19 @@
 
     function validateRequest(request) {
       if (
-        !/^[A-Z]{4}$/.test(
-          request.departureAirport
-        )
+        request.mode !== 'departure' &&
+        request.mode !== 'arrival'
       ) {
-        return (
-          '출발 공항 ICAO 코드를 4자리로 입력하세요.'
-        );
+        return '조회 기준을 선택하세요.';
       }
 
       if (
         !/^[A-Z]{4}$/.test(
-          request.arrivalAirport
+          request.airport
         )
       ) {
         return (
-          '도착 공항 ICAO 코드를 4자리로 입력하세요.'
+          '공항 ICAO 코드를 4자리로 입력하세요.'
         );
       }
 
@@ -1054,20 +984,7 @@
           request.date
         )
       ) {
-        return (
-          '조회 날짜를 입력하세요.'
-        );
-      }
-
-      if (
-        !Number.isFinite(
-          request.flightDurationMinutes
-        ) ||
-        request.flightDurationMinutes < 0
-      ) {
-        return (
-          '비행시간을 분 단위로 입력하세요.'
-        );
+        return '조회 날짜를 입력하세요.';
       }
 
       return '';
@@ -1076,29 +993,11 @@
     function resetForm() {
       document
         .getElementById('mode')
-        .value =
-          'departure';
+        .value = 'departure';
 
       document
-        .getElementById(
-          'departureAirport'
-        )
-        .value =
-          '';
-
-      document
-        .getElementById(
-          'arrivalAirport'
-        )
-        .value =
-          '';
-
-      document
-        .getElementById(
-          'duration'
-        )
-        .value =
-          '120';
+        .getElementById('airport')
+        .value = '';
 
       setDefaultDate();
 
@@ -1109,8 +1008,7 @@
 
       document
         .getElementById('results')
-        .style.display =
-          'none';
+        .style.display = 'none';
     }
 
     function setLoading(loading) {
@@ -1125,15 +1023,13 @@
         .getElementById(
           'searchButton'
         )
-        .disabled =
-          loading;
+        .disabled = loading;
 
       document
         .getElementById(
           'resetButton'
         )
-        .disabled =
-          loading;
+        .disabled = loading;
     }
 
     function showError(message) {
@@ -1142,11 +1038,8 @@
           'error'
         );
 
-      element.textContent =
-        message;
-
-      element.style.display =
-        'block';
+      element.textContent = message;
+      element.style.display = 'block';
     }
 
     function clearError() {

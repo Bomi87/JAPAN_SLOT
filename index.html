@@ -21,6 +21,12 @@
       --primary: #1769e0;
       --primary-hover: #1058bd;
 
+      --navy: #173f73;
+      --navy-hover: #12345f;
+
+      --teal: #0f9f9a;
+      --teal-hover: #0b8581;
+
       --available-bg: #e5f8ed;
       --available-text: #087443;
       --available-border: #9edbb8;
@@ -140,7 +146,7 @@
       height: 52px;
       border: 0;
       border-radius: 10px;
-      background: var(--primary);
+      background: var(--navy);
       color: white;
       font-size: 16px;
       font-weight: 800;
@@ -148,7 +154,7 @@
     }
 
     .full-day-button:hover {
-      background: var(--primary-hover);
+      background: var(--navy-hover);
     }
 
     .single-check-row {
@@ -179,12 +185,12 @@
     }
 
     .single-search-button {
-      background: var(--primary);
+      background: var(--teal);
       color: white;
     }
 
     .single-search-button:hover {
-      background: var(--primary-hover);
+      background: var(--teal-hover);
     }
 
     .secondary-button {
@@ -392,7 +398,17 @@
     }
 
     @media (max-width: 760px) {
-      .form-grid,
+      .form-grid {
+        grid-template-columns:
+          minmax(0, 0.85fr)
+          minmax(0, 1.15fr);
+        gap: 10px;
+      }
+
+      .form-grid .field:nth-child(3) {
+        grid-column: 1 / -1;
+      }
+
       .single-check-row {
         grid-template-columns: 1fr;
       }
@@ -481,7 +497,7 @@
           class="full-day-button"
           onclick="runFullDaySearch()"
         >
-          1일 전체 슬롯 조회 (0000L ~ 2400L)
+          1일 전체 Slot 조회 (0000L ~ 2400L)
         </button>
 
         <div class="single-check-row">
@@ -550,7 +566,7 @@
         <div class="result-title-row">
           <div>
             <div class="result-title">
-              1일 전체 슬롯 조회 결과
+              1일 전체 Slot 조회 결과
             </div>
 
             <div
@@ -840,7 +856,7 @@
 
       setLoading(
         true,
-        '하루 전체 슬롯(0000L~2400L)을 조회하고 있습니다.'
+        '하루 전체 Slot(0000L~2400L)을 조회하고 있습니다.'
       );
 
       try {
@@ -914,7 +930,7 @@
 
       setLoading(
         true,
-        '선택한 시간의 슬롯을 조회하고 있습니다.'
+        '선택한 시간의 Slot을 조회하고 있습니다.'
       );
 
       try {
@@ -1169,7 +1185,7 @@
       }
 
       /*
-       * 슬롯 가능
+       * Slot 가능
        */
       if (
         row &&

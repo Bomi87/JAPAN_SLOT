@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <base target="_top">
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>MLIT Slot Availability</title>
+
+  <style>
+    :root {
+      --background: #f3f6fa;
+      --card: #ffffff;
+      --border: #d9e0e8;
+      --text: #172033;
+      --subtext: #667085;
+      --primary: #1769e0;
+      --primary-hover: #0f55bb;
+      --available-bg: #eafaf1;
+      --available-text: #087443;
+      --unavailable-bg: #fff0f0;
+      --unavailable-text: #bd2525;
+      --alternative-bg: #fff8e7;
+      --alternative-text: #9a6400;
+      --ignored-bg: #f2f4f7;
+      --ignored-text: #667085;
+      --period-bg: #eef4ff;
+      --period-text: #3454a1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family:
+        Arial,
+        "Noto Sans KR",
+        sans-serif;
+    }
+
+    .page {
+      width: min(1100px, 100%);
+      margin: 0 auto;
+      padding: 24px 16px 50px;
+    }
+
+    .header {
+      margin-bottom: 18px;
+    }
+
+    .header h1 {
+      margin: 0 0 7px;
+      font-size: 27px;
+    }
+
+    .header p {
+      margin: 0;
+      color: var(--subtext);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow:
+        0 8px 28px rgba(16, 24, 40, 0.07);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+      gap: 13px;
+      align-items: end;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      color: #475467;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    input,
+    select {
+      width: 100%;
+      height: 44px;
+      padding: 0 11px;
+      border: 1px solid #cfd7e1;
+      border-radius: 9px;
+      background: white;
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    input:focus,
+    select:focus {
+      outline: 3px solid rgba(23, 105, 224, 0.14);
+      border-color: var(--primary);
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 17px;
+    }
+
+    button {
+      height: 46px;
+      padding: 0 20px;
+      border: 0;
+      border-radius: 9px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary-button {
+      flex: 1;
+      background: var(--primary);
+      color: white;
+    }
+
+    .primary-button:hover {
+      background: var(--primary-hover);
+    }
+
+    .secondary-button {
+      background: #eef2f6;
+      color: #344054;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: wait;
+    }
+
+    .loading {
+      display: none;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #eef4ff;
+      color: #344f9c;
+      text-align: center;
+    }
+
+    .error {
+      display: none;
+      margin-top: 18px;
+      padding: 14px;
+      border: 1px solid #f4b9b9;
+      border-radius: 10px;
+      background: #fff1f1;
+      color: #a32020;
+      white-space: pre-wrap;
+      line-height: 1.55;
+    }
+
+    .result-section {
+      display: none;
+      margin-top: 22px;
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: flex-end;
+      margin-bottom: 14px;
+    }
+
+    .result-title {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .checked-at {
+      color: var(--subtext);
+      font-size: 12px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .summary-card {
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fafbfc;
+    }
+
+    .summary-label {
+      color: var(--subtext);
+      font-size: 12px;
+    }
+
+    .summary-number {
+      margin-top: 5px;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 13px;
+    }
+
+    .filter-button {
+      height: 36px;
+      padding: 0 13px;
+      border: 1px solid var(--border);
+      background: white;
+      color: #475467;
+      font-size: 13px;
+    }
+
+    .filter-button.active {
+      border-color: var(--primary);
+      background: #edf4ff;
+      color: var(--primary);
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 650px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      font-size: 14px;
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: #f7f9fb;
+    }
+
+    th,
+    td {
+      padding: 11px 13px;
+      border-bottom: 1px solid #e8ecf1;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      color: #475467;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    tbody tr:hover {
+      background: #fafcff;
+    }
+
+    .time-cell {
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      min-width: 90px;
+      justify-content: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .status-AVAILABLE {
+      background: var(--available-bg);
+      color: var(--available-text);
+    }
+
+    .status-UNAVAILABLE {
+      background: var(--unavailable-bg);
+      color: var(--unavailable-text);
+    }
+
+    .status-ALTERNATIVE {
+      background: var(--alternative-bg);
+      color: var(--alternative-text);
+    }
+
+    .status-OUT_OF_PERIOD {
+      background: var(--period-bg);
+      color: var(--period-text);
+    }
+
+    .status-IGNORED,
+    .status-UNKNOWN {
+      background: var(--ignored-bg);
+      color: var(--ignored-text);
+    }
+
+    .alternative-chip {
+      display: inline-block;
+      margin-right: 5px;
+      padding: 5px 9px;
+      border: 1px solid #e1c373;
+      border-radius: 999px;
+      background: #fffaf0;
+      color: #7f5500;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .empty-alternative {
+      color: #98a2b3;
+    }
+
+    .note {
+      margin-top: 13px;
+      color: var(--subtext);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 850px) {
+      .form-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .summary-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .page {
+        padding: 12px 9px 35px;
+      }
+
+      .panel {
+        padding: 14px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .result-header {
+        display: block;
+      }
+
+      .checked-at {
+        margin-top: 6px;
+      }
+
+      th,
+      td {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="header">
+      <h1>MLIT Slot Availability</h1>
+
+      <p>
+        지정 공항의 슬롯을 0000L부터 2400L까지
+        30분 간격으로 조회합니다.
+      </p>
+    </header>
+
+    <section class="panel">
+      <div class="form-grid">
+        <div class="field">
+          <label for="mode">
+            조회 기준
+          </label>
+
+          <select id="mode">
+            <option value="departure">
+              출발 슬롯
+            </option>
+
+            <option value="arrival">
+              도착 슬롯
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="airport">
+            조회 공항 ICAO
+          </label>
+
+          <input
+            id="airport"
+            maxlength="4"
+            placeholder="예: RJTT"
+            autocomplete="off"
+          >
+        </div>
+
+        <div class="field">
+          <label for="otherAirport">
+            상대 공항 ICAO
+          </label>
+
+          <input
+            id="otherAirport"
+            maxlength="4"
+            placeholder="예: RKSS"
+            autocomplete="off"
+          >
+        </div>
+
+        <div class="field">
+          <label for="date">
+            기준 날짜
+          </label>
+
+          <input
+            id="date"
+            type="date"
+          >
+        </div>
+
+        <div class="field">
+          <label for="duration">
+            비행시간(분)
+          </label>
+
+          <input
+            id="duration"
+            type="number"
+            min="0"
+            max="1440"
+            step="5"
+            value="120"
+          >
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button
+          id="searchButton"
+          class="primary-button"
+          onclick="runSearch()"
+        >
+          하루 전체 슬롯 조회
+        </button>
+
+        <button
+          id="resetButton"
+          class="secondary-button"
+          onclick="resetForm()"
+        >
+          초기화
+        </button>
+      </div>
+
+      <div
+        id="loading"
+        class="loading"
+      >
+        49개 시간대를 확인하고 있습니다.
+      </div>
+
+      <div
+        id="error"
+        class="error"
+      ></div>
+
+      <section
+        id="resultSection"
+        class="result-section"
+      >
+        <div class="result-header">
+          <h2 class="result-title">
+            조회 결과
+          </h2>
+
+          <div
+            id="checkedAt"
+            class="checked-at"
+          ></div>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="summary-label">
+              전체
+            </div>
+
+            <div
+              id="summaryTotal"
+              class="summary-number"
+            >
+              0
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <div class="summary-label">
+              사용 가능
+            </div>
+
+            <div
+              id="summaryAvailable"
+              class="summary-number"
+            >
+              0
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <div class="summary-label">
+              사용 불가
+            </div>
+
+            <div
+              id="summaryUnavailable"
+              class="summary-number"
+            >
+              0
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <div class="summary-label">
+              대체 시간
+            </div>
+
+            <div
+              id="summaryAlternative"
+              class="summary-number"
+            >
+              0
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <div class="summary-label">
+              기간 외
+            </div>
+
+            <div
+              id="summaryPeriod"
+              class="summary-number"
+            >
+              0
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <button
+            class="filter-button active"
+            data-filter="ALL"
+            onclick="setFilter('ALL', this)"
+          >
+            전체
+          </button>
+
+          <button
+            class="filter-button"
+            data-filter="AVAILABLE"
+            onclick="setFilter('AVAILABLE', this)"
+          >
+            가능
+          </button>
+
+          <button
+            class="filter-button"
+            data-filter="UNAVAILABLE"
+            onclick="setFilter('UNAVAILABLE', this)"
+          >
+            불가
+          </button>
+
+          <button
+            class="filter-button"
+            data-filter="ALTERNATIVE"
+            onclick="setFilter('ALTERNATIVE', this)"
+          >
+            대체 시간
+          </button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>시간</th>
+                <th>결과</th>
+                <th>대체 가능 시간</th>
+                <th>API 요청 일시</th>
+              </tr>
+            </thead>
+
+            <tbody id="resultBody"></tbody>
+          </table>
+        </div>
+
+        <div class="note">
+          2400L 행은 API상 다음 날짜의 00:00으로
+          변환하여 조회합니다.
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    let resultRows = [];
+    let currentFilter = 'ALL';
+
+    initializePage();
+
+    function initializePage() {
+      setDefaultDate();
+      bindAirportInputs();
+    }
+
+    function setDefaultDate() {
+      const dateInput =
+        document.getElementById('date');
+
+      const now =
+        new Date();
+
+      const localDate =
+        new Date(
+          now.getTime() -
+          now.getTimezoneOffset() *
+          60000
+        );
+
+      dateInput.value =
+        localDate
+          .toISOString()
+          .substring(0, 10);
+    }
+
+    function bindAirportInputs() {
+      [
+        'airport',
+        'otherAirport'
+      ].forEach(function(id) {
+        document
+          .getElementById(id)
+          .addEventListener(
+            'input',
+            function() {
+              this.value =
+                this.value
+                  .toUpperCase()
+                  .replace(
+                    /[^A-Z]/g,
+                    ''
+                  )
+                  .substring(0, 4);
+            }
+          );
+      });
+    }
+
+    function runSearch() {
+      clearMessages();
+
+      const input = {
+        mode:
+          getValue('mode'),
+
+        airport:
+          getValue('airport')
+            .toUpperCase(),
+
+        otherAirport:
+          getValue('otherAirport')
+            .toUpperCase(),
+
+        date:
+          normalizeDate(
+            getValue('date')
+          ),
+
+        flightDurationMinutes:
+          Number(
+            getValue('duration')
+          )
+      };
+
+      const validationError =
+        validateClientInput(input);
+
+      if (validationError) {
+        showError(validationError);
+        return;
+      }
+
+      setLoading(true);
+
+      google.script.run
+        .withSuccessHandler(
+          handleSuccess
+        )
+        .withFailureHandler(
+          handleFailure
+        )
+        .checkFullDaySlots(input);
+    }
+
+    function handleSuccess(response) {
+      setLoading(false);
+
+      if (!response ||
+          response.success !== true) {
+
+        showError(
+          response &&
+          response.message
+            ? response.message
+            : '조회에 실패했습니다.'
+        );
+
+        return;
+      }
+
+      resultRows =
+        Array.isArray(response.rows)
+          ? response.rows
+          : [];
+
+      currentFilter = 'ALL';
+
+      updateFilterButtons();
+      renderSummary(response.summary);
+      renderRows();
+      showResultSection();
+
+      document
+        .getElementById('checkedAt')
+        .textContent =
+          `조회 시각: ${response.checkedAt}`;
+    }
+
+    function handleFailure(error) {
+      setLoading(false);
+
+      showError(
+        error && error.message
+          ? error.message
+          : String(error)
+      );
+    }
+
+    function renderSummary(summary) {
+      const safeSummary =
+        summary || {};
+
+      setText(
+        'summaryTotal',
+        safeSummary.total || 0
+      );
+
+      setText(
+        'summaryAvailable',
+        safeSummary.available || 0
+      );
+
+      setText(
+        'summaryUnavailable',
+        safeSummary.unavailable || 0
+      );
+
+      setText(
+        'summaryAlternative',
+        safeSummary.alternative || 0
+      );
+
+      setText(
+        'summaryPeriod',
+        safeSummary.outOfPeriod || 0
+      );
+    }
+
+    function renderRows() {
+      const body =
+        document.getElementById(
+          'resultBody'
+        );
+
+      const filteredRows =
+        resultRows.filter(function(row) {
+          if (currentFilter === 'ALL') {
+            return true;
+          }
+
+          if (currentFilter ===
+              'UNAVAILABLE') {
+
+            return (
+              row.status ===
+                'UNAVAILABLE' ||
+              row.status ===
+                'OUT_OF_PERIOD' ||
+              row.status ===
+                'UNKNOWN'
+            );
+          }
+
+          return row.status ===
+            currentFilter;
+        });
+
+      if (filteredRows.length === 0) {
+        body.innerHTML = `
+          <tr>
+            <td colspan="4">
+              표시할 결과가 없습니다.
+            </td>
+          </tr>
+        `;
+
+        return;
+      }
+
+      body.innerHTML =
+        filteredRows
+          .map(createRowHtml)
+          .join('');
+    }
+
+    function createRowHtml(row) {
+      const alternatives =
+        Array.isArray(row.alternatives)
+          ? row.alternatives
+          : [];
+
+      const alternativeHtml =
+        alternatives.length
+          ? alternatives
+              .map(function(time) {
+                return `
+                  <span
+                    class="alternative-chip"
+                  >
+                    ${escapeHtml(time)}
+                  </span>
+                `;
+              })
+              .join('')
+          : `
+              <span
+                class="empty-alternative"
+              >
+                -
+              </span>
+            `;
+
+      return `
+        <tr>
+          <td class="time-cell">
+            ${escapeHtml(row.time)}
+          </td>
+
+          <td>
+            <span
+              class="
+                status-badge
+                status-${escapeHtml(row.status)}
+              "
+            >
+              ${escapeHtml(
+                getStatusLabel(row.status)
+              )}
+            </span>
+          </td>
+
+          <td>
+            ${alternativeHtml}
+          </td>
+
+          <td>
+            ${escapeHtml(row.requestDate)}
+            ${escapeHtml(row.requestTime)}
+          </td>
+        </tr>
+      `;
+    }
+
+    function getStatusLabel(status) {
+      const labels = {
+        AVAILABLE:
+          '사용 가능',
+
+        UNAVAILABLE:
+          '사용 불가',
+
+        ALTERNATIVE:
+          '대체 시간',
+
+        OUT_OF_PERIOD:
+          '기간 외',
+
+        IGNORED:
+          '확인 제외',
+
+        UNKNOWN:
+          '결과 없음'
+      };
+
+      return labels[status] ||
+        status ||
+        '알 수 없음';
+    }
+
+    function setFilter(
+      filter,
+      button
+    ) {
+      currentFilter = filter;
+
+      updateFilterButtons(button);
+      renderRows();
+    }
+
+    function updateFilterButtons(
+      selectedButton
+    ) {
+      document
+        .querySelectorAll(
+          '.filter-button'
+        )
+        .forEach(function(button) {
+          const isActive =
+            selectedButton
+              ? button === selectedButton
+              : button.dataset.filter ===
+                currentFilter;
+
+          button.classList.toggle(
+            'active',
+            isActive
+          );
+        });
+    }
+
+    function validateClientInput(input) {
+      if (!/^[A-Z]{4}$/.test(
+        input.airport
+      )) {
+        return (
+          '조회 공항을 4자리 ICAO 코드로 입력하세요.'
+        );
+      }
+
+      if (!/^[A-Z]{4}$/.test(
+        input.otherAirport
+      )) {
+        return (
+          '상대 공항을 4자리 ICAO 코드로 입력하세요.'
+        );
+      }
+
+      if (!/^\d{4}\/\d{2}\/\d{2}$/.test(
+        input.date
+      )) {
+        return (
+          '조회 날짜를 입력하세요.'
+        );
+      }
+
+      if (!Number.isFinite(
+        input.flightDurationMinutes
+      )) {
+        return (
+          '비행시간을 분 단위로 입력하세요.'
+        );
+      }
+
+      return '';
+    }
+
+    function resetForm() {
+      document
+        .getElementById('mode')
+        .value =
+          'departure';
+
+      document
+        .getElementById('airport')
+        .value =
+          '';
+
+      document
+        .getElementById('otherAirport')
+        .value =
+          '';
+
+      document
+        .getElementById('duration')
+        .value =
+          '120';
+
+      setDefaultDate();
+
+      resultRows = [];
+      currentFilter = 'ALL';
+
+      clearMessages();
+
+      document
+        .getElementById(
+          'resultSection'
+        )
+        .style.display =
+          'none';
+    }
+
+    function setLoading(isLoading) {
+      document
+        .getElementById('loading')
+        .style.display =
+          isLoading
+            ? 'block'
+            : 'none';
+
+      document
+        .getElementById(
+          'searchButton'
+        )
+        .disabled =
+          isLoading;
+
+      document
+        .getElementById(
+          'resetButton'
+        )
+        .disabled =
+          isLoading;
+    }
+
+    function showResultSection() {
+      document
+        .getElementById(
+          'resultSection'
+        )
+        .style.display =
+          'block';
+    }
+
+    function clearMessages() {
+      document
+        .getElementById('error')
+        .style.display =
+          'none';
+
+      document
+        .getElementById('error')
+        .textContent =
+          '';
+    }
+
+    function showError(message) {
+      const element =
+        document.getElementById(
+          'error'
+        );
+
+      element.textContent =
+        message;
+
+      element.style.display =
+        'block';
+    }
+
+    function getValue(id) {
+      return document
+        .getElementById(id)
+        .value
+        .trim();
+    }
+
+    function setText(id, value) {
+      document
+        .getElementById(id)
+        .textContent =
+          String(value);
+    }
+
+    function normalizeDate(value) {
+      return String(value)
+        .replace(/-/g, '/');
+    }
+
+    function escapeHtml(value) {
+      return String(
+        value === undefined ||
+        value === null
+          ? ''
+          : value
+      )
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+  </script>
+</body>
+</html>

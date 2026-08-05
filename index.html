@@ -752,7 +752,7 @@
 
 
     const STATUS_POLL_INTERVAL_MS =
-      1000;
+      2500;
     let JAPAN_SLOT_APP_STARTED = false;
 
     function showAuthorizedApp() {
@@ -1723,87 +1723,213 @@
     ) {
       validateBackendUrl();
 
-      const controller =
-        new AbortController();
+      const maxAttempts = 4;
+      let lastError = null;
 
-      const timeoutId =
-        setTimeout(
-          function() {
-            controller.abort();
-          },
-          REQUEST_TIMEOUT_MS
-        );
+      for (
+        let attempt = 1;
+        attempt <= maxAttempts;
+        attempt++
+      ) {
+        const controller =
+          new AbortController();
 
-      try {
-        const response =
-          await fetch(
-            BACKEND_URL,
-            {
-              method:
-                'POST',
-
-              headers: {
-                'Content-Type':
-                  'text/plain;charset=UTF-8'
-              },
-
-              body:
-                JSON.stringify(
-                  payload
-                ),
-
-              redirect:
-                'follow',
-
-              signal:
-                controller.signal,
-
-              cache:
-                'no-store'
-            }
+        const timeoutId =
+          setTimeout(
+            function() {
+              controller.abort();
+            },
+            REQUEST_TIMEOUT_MS
           );
-
-        if (!response.ok) {
-          throw new Error(
-            '백엔드 HTTP 오류: ' +
-            response.status
-          );
-        }
-
-        const text =
-          await response.text();
 
         try {
-          return JSON.parse(
-            text
-          );
+          if (attempt > 1) {
+            setLoading(
+              true,
+              '백엔드 연결이 일시적으로 불안정하여 자동 재시도 중입니다. (' +
+              attempt +
+              '/' +
+              maxAttempts +
+              ')'
+            );
+          }
+
+          const response =
+            await fetch(
+              BACKEND_URL,
+              {
+                method:
+                  'POST',
+
+                headers: {
+                  'Content-Type':
+                    'text/plain;charset=UTF-8'
+                },
+
+                body:
+                  JSON.stringify(
+                    payload
+                  ),
+
+                redirect:
+                  'follow',
+
+                signal:
+                  controller.signal,
+
+                cache:
+                  'no-store'
+              }
+            );
+
+          if (!response.ok) {
+            const errorText =
+              await response.text();
+
+            const httpError =
+              new Error(
+                '백엔드 HTTP 오류: ' +
+                response.status +
+                '\n\n응답 주소:\n' +
+                response.url +
+                '\n\n응답 내용:\n' +
+                errorText.substring(
+                  0,
+                  500
+                )
+              );
+
+            httpError.status =
+              response.status;
+
+            throw httpError;
+          }
+
+          const text =
+            await response.text();
+
+          try {
+            return JSON.parse(
+              text
+            );
+
+          } catch (error) {
+            const parseError =
+              new Error(
+                '백엔드 응답이 JSON 형식이 아닙니다.\n\n' +
+                text.substring(
+                  0,
+                  500
+                )
+              );
+
+            parseError.nonRetryable =
+              true;
+
+            throw parseError;
+          }
 
         } catch (error) {
-          throw new Error(
-            '백엔드 응답이 JSON 형식이 아닙니다.\n\n' +
-            text.substring(0, 500)
+          if (
+            error &&
+            error.name ===
+              'AbortError'
+          ) {
+            lastError =
+              new Error(
+                '백엔드 응답 시간이 초과되었습니다.'
+              );
+
+          } else {
+            lastError =
+              error instanceof Error
+                ? error
+                : new Error(
+                    String(error)
+                  );
+          }
+
+          const status =
+            Number(
+              lastError.status || 0
+            );
+
+          const message =
+            String(
+              lastError.message || ''
+            );
+
+          const retryable =
+            lastError.nonRetryable !== true &&
+            (
+              lastError.name ===
+                'TypeError' ||
+              /failed to fetch/i.test(
+                message
+              ) ||
+              /networkerror/i.test(
+                message
+              ) ||
+              /load failed/i.test(
+                message
+              ) ||
+              /시간이 초과/i.test(
+                message
+              ) ||
+              status === 404 ||
+              status === 408 ||
+              status === 429 ||
+              status >= 500
+            );
+
+          if (
+            !retryable ||
+            attempt >= maxAttempts
+          ) {
+            if (
+              /failed to fetch/i.test(
+                message
+              ) ||
+              lastError.name ===
+                'TypeError'
+            ) {
+              throw new Error(
+                '백엔드 연결에 일시적으로 실패했습니다.\n' +
+                '잠시 후 다시 조회해 주세요.'
+              );
+            }
+
+            throw lastError;
+          }
+
+          console.warn(
+            '백엔드 연결 실패, 자동 재시도:',
+            attempt + '/' + maxAttempts,
+            message
+          );
+
+          await sleep(
+            Math.min(
+              1500 * attempt,
+              5000
+            )
+          );
+
+        } finally {
+          clearTimeout(
+            timeoutId
           );
         }
-
-      } catch (error) {
-        if (
-          error &&
-          error.name ===
-            'AbortError'
-        ) {
-          throw new Error(
-            '백엔드 응답 시간이 초과되었습니다.'
-          );
-        }
-
-        throw error;
-
-      } finally {
-        clearTimeout(
-          timeoutId
-        );
       }
+
+      throw (
+        lastError ||
+        new Error(
+          '백엔드 연결에 실패했습니다.'
+        )
+      );
     }
+
 
     function validateBaseRequest(
       request

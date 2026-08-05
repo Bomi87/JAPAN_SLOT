@@ -750,6 +750,18 @@
     const REQUEST_TIMEOUT_MS =
       120000;
 
+    const FULL_DAY_REQUEST_TIMEOUT_MS =
+      300000;
+
+    const SINGLE_REQUEST_TIMEOUT_MS =
+      180000;
+
+    const STATUS_REQUEST_TIMEOUT_MS =
+      30000;
+
+    const CACHE_REQUEST_TIMEOUT_MS =
+      30000;
+
 
     const STATUS_POLL_INTERVAL_MS =
       2500;
@@ -758,7 +770,7 @@
       2000;
 
     const RECOVERY_MAX_WAIT_MS =
-      90000;
+      240000;
     let JAPAN_SLOT_APP_STARTED = false;
 
     function showAuthorizedApp() {
@@ -1166,7 +1178,12 @@
           },
           {
             maxAttempts: 1,
-            showRetryMessage: false
+            showRetryMessage: false,
+
+            timeoutMs:
+              requestType === 'FULL_DAY'
+                ? FULL_DAY_REQUEST_TIMEOUT_MS
+                : SINGLE_REQUEST_TIMEOUT_MS
           }
         );
 
@@ -1234,7 +1251,9 @@
               },
               {
                 maxAttempts: 2,
-                showRetryMessage: false
+                showRetryMessage: false,
+                timeoutMs:
+                  STATUS_REQUEST_TIMEOUT_MS
               }
             );
 
@@ -1275,7 +1294,9 @@
               },
               {
                 maxAttempts: 3,
-                showRetryMessage: false
+                showRetryMessage: false,
+                timeoutMs:
+                  CACHE_REQUEST_TIMEOUT_MS
               }
             );
 
@@ -1339,7 +1360,12 @@
               },
               {
                 maxAttempts: 2,
-                showRetryMessage: false
+                showRetryMessage: false,
+
+                timeoutMs:
+                  requestType === 'FULL_DAY'
+                    ? FULL_DAY_REQUEST_TIMEOUT_MS
+                    : SINGLE_REQUEST_TIMEOUT_MS
               }
             );
           }
@@ -1412,7 +1438,14 @@
               requestType:
                 requestType
             }
-          });
+          },
+          {
+            maxAttempts: 2,
+            showRetryMessage: false,
+            timeoutMs:
+              STATUS_REQUEST_TIMEOUT_MS
+          }
+        );
 
         if (
           !statusResponse ||
@@ -1682,10 +1715,38 @@
           'fullDayCacheBadge'
         );
 
-      cacheBadge.style.display =
+      if (
         response.cacheHit === true
-          ? 'inline-block'
-          : 'none';
+      ) {
+        cacheBadge.style.display =
+          'inline-block';
+
+        if (
+          response.cacheSource ===
+            'RECOVERED_CACHE'
+        ) {
+          cacheBadge.textContent =
+            '응답 복구';
+
+        } else if (
+          response.cacheSource ===
+            'CACHE_AFTER_LOCK'
+        ) {
+          cacheBadge.textContent =
+            'Cache · 대기 후';
+
+        } else {
+          cacheBadge.textContent =
+            'Cache';
+        }
+
+      } else {
+        cacheBadge.style.display =
+          'none';
+
+        cacheBadge.textContent =
+          'Cache';
+      }
 
       document
         .getElementById(
@@ -1716,7 +1777,17 @@
       ) {
         if (
           response.cacheSource ===
-          'CACHE_AFTER_LOCK'
+            'RECOVERED_CACHE'
+        ) {
+          return {
+            label: '응답 복구',
+            className: 'live'
+          };
+        }
+
+        if (
+          response.cacheSource ===
+            'CACHE_AFTER_LOCK'
         ) {
           return {
             label: 'Cache · 대기 후',
@@ -1983,6 +2054,15 @@
       const showRetryMessage =
         settings.showRetryMessage !== false;
 
+      const timeoutMs =
+        Math.max(
+          1000,
+          Number(
+            settings.timeoutMs
+          ) ||
+          REQUEST_TIMEOUT_MS
+        );
+
       let lastError = null;
 
       for (
@@ -1998,7 +2078,7 @@
             function() {
               controller.abort();
             },
-            REQUEST_TIMEOUT_MS
+            timeoutMs
           );
 
         try {

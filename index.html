@@ -136,6 +136,13 @@
       max-width: 100%;
     }
 
+    /* iOS Safari can give native date controls an oversized intrinsic width. */
+    #date::-webkit-date-and-time-value,
+    #date::-webkit-datetime-edit {
+      min-width: 0;
+      max-width: 100%;
+    }
+
     .field label,
     .compact-field label {
       display: block;
@@ -495,6 +502,15 @@
 
       .form-grid .field:nth-child(3) {
         grid-column: 1 / -1;
+        overflow: hidden;
+      }
+
+      #date {
+        -webkit-appearance: none;
+        appearance: none;
+        box-sizing: border-box;
+        max-inline-size: 100%;
+        overflow: hidden;
       }
 
       .single-check-row {
